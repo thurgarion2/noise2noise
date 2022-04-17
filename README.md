@@ -27,7 +27,7 @@ show_img(noisy_imgs_1[0])
 
 Nbdev is helpfull for 2 things. First, it fix some problems with the integration of notebook with github. Second, it allow to export notebooks as modules and generate documentation automatically.
 
-To export a notebook as a module, you should add `# default_exp module_name` at the top (ex: #default_exp helpers) and add `#export` in cell you want to exports (you can read 00_helpers to have an exmaple). You can also add `#hide` in cell that you don't want to be displayed in the documentation.
+To export a notebook as a module, you should add `# default_exp module_name` at the top (ex: #default_exp helpers) and add `#export` in cells you want to export (you can read 00_helpers to have an exmaple). You can also add `#hide` in cells that you don't want to be displayed in the documentation.
 
 ## Push code to github
 
