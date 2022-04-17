@@ -7,7 +7,6 @@ index = {"test": "00_baseline.ipynb",
          "load_train": "00_loaddata.ipynb"}
 
 modules = ["baseline.py",
-           "library.py",
            "helpers.py",
            "loaddata.py"]
 
