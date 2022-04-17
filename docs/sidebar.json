@@ -1,6 +1,7 @@
 {
   "noise2noise": {
     "Overview": "/",
-    "module name here": "core.html"
+    "module name here": "baseline.html",
+    "Title": "loaddata.html"
   }
 }

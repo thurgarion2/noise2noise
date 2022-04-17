@@ -11,7 +11,10 @@ entries:
       url: /
     - output: web,pdf
       title: module name here
-      url: core.html
+      url: baseline.html
+    - output: web,pdf
+      title: Title
+      url: loaddata.html
     output: web
     title: noise2noise
   output: web
