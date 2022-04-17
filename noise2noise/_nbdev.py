@@ -2,10 +2,12 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"show_img": "00_helpers.ipynb",
+index = {"test": "00_baseline.ipynb",
+         "show_img": "00_helpers.ipynb",
          "load_train": "00_loaddata.ipynb"}
 
-modules = ["library.py",
+modules = ["baseline.py",
+           "library.py",
            "helpers.py",
            "loaddata.py"]
 
