@@ -38,3 +38,5 @@ Before pushing code, you should run :
 - git add -A; git commit -m'???'; git push
 
 in that order
+
+**do not hesitate to ask questions**
