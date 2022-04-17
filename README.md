@@ -1,24 +1,40 @@
-# Project name here
-> Summary description here.
+# noise2noise
+> EE-559 project 1, 2
 
 
-This file will become your README and also the index of your documentation.
+You can access the documentation [here](https://thurgarion2.github.io/noise2noise/).
 
-## Install
+## Set up the environnement
 
-`pip install your_project_name`
+To set up your environement, you need :
+- install [nbdev](https://nbdev.fast.ai/tutorial.html) and standard other libraries such as torch ..
+- clone the repo
+- download the [dataset](https://drive.google.com/drive/u/2/folders/1CYsJ5gJkZWZAXJ1oQgUpGX7q5PxYEuNs) (you need to be connect to epfl account) and put it in `/dataset` folder.
+- run this notebook to be sure that all works
 
-## How to use
-
-Fill me in please! Don't forget code examples:
+## Run this to check that all is fine
 
 ```python
-1+1
+noisy_imgs_1 , noisy_imgs_2 = load_train()
+show_img(noisy_imgs_1[0])
 ```
 
 
+![png](docs/images/output_4_0.png)
 
 
-    2
+## Create a module
 
+Nbdev is helpfull for 2 things. First, it fix some problems with the integration of notebook with github. Second, it allow to export notebooks as modules and generate documentation automatically.
 
+To export a notebook as a module, you should add `# default_exp module_name` at the top (ex: #default_exp helpers) and add `#export` in cell you want to exports (you can read 00_helpers to have an exmaple). You can also add `#hide` in cell that you don't want to be displayed in the documentation.
+
+## Push code to github
+
+Before pushing code, you should run :
+- nbdev_build_lib
+- nbdev_build_docs
+- nbdev_test_nbs
+- git add -A; git commit -m'???'; git push
+
+in that order

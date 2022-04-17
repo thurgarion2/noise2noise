@@ -2,12 +2,10 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"test": "00_baseline.ipynb",
-         "load_train": "00_helpers.ipynb",
+index = {"load_train": "00_helpers.ipynb",
          "show_img": "00_helpers.ipynb"}
 
-modules = ["baseline.py",
-           "helpers.py"]
+modules = ["helpers.py"]
 
 doc_url = "https://thurgarion2.github.io/noise2noise/"
 

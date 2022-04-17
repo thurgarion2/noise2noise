@@ -10,7 +10,7 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: module name here
+      title: Baseline
       url: baseline.html
     - output: web,pdf
       title: Helpers

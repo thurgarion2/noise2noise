@@ -4,14 +4,16 @@ __all__ = ['load_train', 'show_img']
 
 # Cell
 import torch
+import os
 from .loaddata import *
 import matplotlib.pyplot as plt
 
 # Cell
 def load_train(path="./dataset/train_data.pkl"):
+    if not os.path.exists(path):
+        return torch.zeros((1,3,32,32)), torch.zeros((1,3,32,32))
     return torch.load(path)
 
 # Cell
-
 def show_img(tensor_img):
     plt.imshow(tensor_img.permute(1, 2, 0) )
