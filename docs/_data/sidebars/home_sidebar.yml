@@ -13,8 +13,8 @@ entries:
       title: module name here
       url: baseline.html
     - output: web,pdf
-      title: Title
-      url: loaddata.html
+      title: Helpers
+      url: helpers.html
     output: web
     title: noise2noise
   output: web
