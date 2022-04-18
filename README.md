@@ -2,7 +2,7 @@
 > EE-559 project 1, 2
 
 
-You can access our project documentation <span style="color:red">[here](https://thurgarion2.github.io/noise2noise/)</span>.
+You can access our project documentation [here](https://thurgarion2.github.io/noise2noise/).
 
 ## Set up the environnement
 
