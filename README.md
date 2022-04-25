@@ -2,7 +2,7 @@
 > EE-559 project 1, 2
 
 
-You can access our project documentation [here](https://thurgarion2.github.io/noise2noise/).
+You can access the documentation [here](https://thurgarion2.github.io/noise2noise/) !!!
 
 ## Set up the environnement
 
@@ -32,11 +32,14 @@ To export a notebook as a module, you should add `# default_exp module_name` at 
 ## Push code to github
 
 Before pushing code, you should run :
-- nbdev_build_lib
+- nbdev_build_lib 
 - nbdev_build_docs
 - nbdev_test_nbs
 - git add -A; git commit -m'???'; git push
 
 in that order
+
+if pull and have conflicts run :
+- nbdev_fix_merge (you still have to resolve conflicts, but you can do it in notebooks)
 
 **do not hesitate to ask questions**

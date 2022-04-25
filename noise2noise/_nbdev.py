@@ -3,7 +3,10 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"load_train": "00_helpers.ipynb",
-         "show_img": "00_helpers.ipynb"}
+         "to_float_image": "00_helpers.ipynb",
+         "to_rgb_image": "00_helpers.ipynb",
+         "show_img": "00_helpers.ipynb",
+         "psnr": "00_helpers.ipynb"}
 
 modules = ["helpers.py"]
 
