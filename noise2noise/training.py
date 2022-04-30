@@ -47,6 +47,7 @@ def psnr_metric():
 # Cell
 def train(model, train_loader, test_loader, optim, criterion, metric, gradient_steps=1000, samples_steps=100):
     iterator = iter(train_loader)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     train_loss = []
     test_loss = []
     test_metric = []
@@ -59,7 +60,7 @@ def train(model, train_loader, test_loader, optim, criterion, metric, gradient_s
         except StopIteration:
             iterator = iter(train_loader)
             input, target = iterator.next()
-
+        input, target = input.to(device), target.to(device)
         output = model(input)
         loss = criterion(output, target)
         optim.zero_grad()
@@ -78,10 +79,14 @@ def train(model, train_loader, test_loader, optim, criterion, metric, gradient_s
 
 def eval_model(model, loader, metric):
     losses = []
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     iterator = iter(loader)
+
     with torch.no_grad():
         for loop in range(5):
             input, target = iterator.next()
+            input, target = input.to(device), target.to(device)
+
             output = model(input)
             losses.append(metric(output, target).item())
 
@@ -92,7 +97,11 @@ def eval_model(model, loader, metric):
 
 def show_results(model, dataloader, nb_examples=4):
     _, axis = plt.subplots(4,2, figsize=(8,4*nb_examples))
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     input, target = iter(dataloader).next()
+    model.to("cpu")
+
     with torch.no_grad():
         output = model(input)
 
@@ -100,6 +109,7 @@ def show_results(model, dataloader, nb_examples=4):
             show_img(output[i], axis=axis[i,0])
             show_img(target[i], axis=axis[i,1])
             print(f'psnr :{psnr(output[i] , target[i]).item()}')
+    model.to(device)
 
 
 
