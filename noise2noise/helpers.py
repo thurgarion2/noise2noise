@@ -23,9 +23,12 @@ def to_rgb_image(image):
     return (image*255).to(torch.uint8)
 
 # Cell
-def show_img(float_img):
-    rgb_img = to_rgb_image(float_img)
-    plt.imshow(rgb_img.permute(1, 2, 0) )
+def show_img(float_img, axis=None):
+    rgb_img = to_rgb_image(float_img.clip(0,1))
+    if axis:
+        axis.imshow(rgb_img.permute(1, 2, 0) )
+    else:
+        plt.imshow(rgb_img.permute(1, 2, 0) )
 
 # Cell
 def psnr(denoised , ground_truth):
