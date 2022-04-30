@@ -47,7 +47,7 @@ nb_path: "00_helpers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_train" class="doc_header"><code>load_train</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/loaddata.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_train</code>(<strong><code>path</code></strong>=<em><code>'./dataset/train_data.pkl'</code></em>)</p>
+<h4 id="load_images" class="doc_header"><code>load_images</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_images</code>(<strong><code>path</code></strong>=<em><code>'./dataset/train_data.pkl'</code></em>)</p>
 </blockquote>
 
 </div>
@@ -74,7 +74,7 @@ nb_path: "00_helpers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">()</span>
 <span class="n">noisy_img_1</span> <span class="o">=</span> <span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">noisy_img_1</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span>
 <span class="n">noisy_img_1</span><span class="o">.</span><span class="n">shape</span>
@@ -149,7 +149,7 @@ nb_path: "00_helpers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="to_float_image" class="doc_header"><code>to_float_image</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_float_image</code>(<strong><code>image</code></strong>)</p>
+<h4 id="to_float_image" class="doc_header"><code>to_float_image</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_float_image</code>(<strong><code>image</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -176,7 +176,7 @@ nb_path: "00_helpers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">()</span>
 <span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 </pre></div>
@@ -215,7 +215,7 @@ nb_path: "00_helpers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="to_rgb_image" class="doc_header"><code>to_rgb_image</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L23" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_rgb_image</code>(<strong><code>image</code></strong>)</p>
+<h4 id="to_rgb_image" class="doc_header"><code>to_rgb_image</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>to_rgb_image</code>(<strong><code>image</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -242,7 +242,7 @@ nb_path: "00_helpers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">()</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">to_rgb_image</span><span class="p">(</span><span class="n">to_float_image</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
 </pre></div>
@@ -281,7 +281,7 @@ nb_path: "00_helpers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_img" class="doc_header"><code>show_img</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_img</code>(<strong><code>float_img</code></strong>)</p>
+<h4 id="show_img" class="doc_header"><code>show_img</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_img</code>(<strong><code>float_img</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -308,7 +308,7 @@ nb_path: "00_helpers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">()</span>
 <span class="n">float_img</span> <span class="o">=</span> <span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">show_img</span><span class="p">(</span><span class="n">float_img</span><span class="p">)</span>
 </pre></div>
@@ -349,7 +349,7 @@ nb_path: "00_helpers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="psnr" class="doc_header"><code>psnr</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L32" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>psnr</code>(<strong><code>denoised</code></strong>, <strong><code>ground_truth</code></strong>)</p>
+<h4 id="psnr" class="doc_header"><code>psnr</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/helpers.py#L31" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>psnr</code>(<strong><code>denoised</code></strong>, <strong><code>ground_truth</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -376,7 +376,7 @@ nb_path: "00_helpers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs_1</span> <span class="p">,</span> <span class="n">noisy_imgs_2</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">()</span>
 <span class="n">psnr</span> <span class="p">(</span><span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_imgs_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">,</span> <span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_imgs_2</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 

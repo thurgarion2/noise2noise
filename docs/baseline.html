@@ -125,7 +125,7 @@ nb_path: "00_baseline.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs</span> <span class="p">,</span> <span class="n">target_imgs</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">(</span><span class="s1">&#39;./dataset/val_data.pkl&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_imgs</span> <span class="p">,</span> <span class="n">target_imgs</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">(</span><span class="s1">&#39;./dataset/val_data.pkl&#39;</span><span class="p">)</span>
 <span class="n">noisy_img</span> <span class="o">=</span> <span class="n">noisy_imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">target_img</span> <span class="o">=</span> <span class="n">target_imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">show_img</span><span class="p">(</span><span class="n">to_float_image</span><span class="p">(</span><span class="n">noisy_img</span><span class="p">))</span>

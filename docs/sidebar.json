@@ -2,6 +2,8 @@
   "noise2noise": {
     "Overview": "/",
     "Baseline": "baseline.html",
-    "Helpers": "helpers.html"
+    "Helpers": "helpers.html",
+    "Training": "training.html",
+    "Unet": "unet.html"
   }
 }
