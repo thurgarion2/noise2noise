@@ -14,9 +14,13 @@ index = {"load_images": "00_helpers.ipynb",
          "eval_model": "00_training.ipynb",
          "show_results": "00_training.ipynb",
          "plot_losses": "00_training.ipynb",
+         "lr_finder": "00_training.ipynb",
          "UnetBlockDown": "00_unet.ipynb",
          "UnetBlockUp": "00_unet.ipynb",
-         "Unet": "00_unet.ipynb"}
+         "UnetBlockDownBatchNorm": "00_unet.ipynb",
+         "UnetBlockUpBatchNorm": "00_unet.ipynb",
+         "Unet": "00_unet.ipynb",
+         "UnetBatchNorm": "00_unet.ipynb"}
 
 modules = ["helpers.py",
            "training.py",
