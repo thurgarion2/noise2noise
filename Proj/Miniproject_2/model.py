@@ -1,7 +1,9 @@
+from turtle import forward
 import torch
 from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 
+# Autograd globally off
 torch.set_grad_enabled(False)
 
 class Module(object):
@@ -51,4 +53,89 @@ class Model():
         '''
         pass
 
-# TODO: Modules Conv2d, TransposeConv2d, NearestUpsampling, ReLU, Sigmoid, MSE, SGD, Sequential
+class ReLU(Module):
+    '''ReLU activation'''
+    def forward(self, input_: torch.Tensor):
+        '''Performs ReLU forward pass
+        
+        :input: Input tensor from previous layer output
+
+        :returns: ReLU activation applied on input
+        '''
+        # Save input for backward pass
+        self.input_ = input_.clone()
+        # Apply ReLU = max(0, x)
+        return input_.maximum(input_.new_zeros(input_.size()))
+
+    def backward(self, d_out: torch.Tensor):
+        '''Performs ReLU backward pass
+        
+        :d_out: Derivatives from the next layer
+
+        :returns: Gradient w.r.t. input
+        '''
+        return d_out * (self.input_ >= 0)
+
+    def param(self):
+        '''ReLU is a parameterless module'''
+        return []
+
+class Sigmoid(Module):
+    '''Sigmoid activation'''
+    def forward(self, input_: torch.Tensor):
+        '''Performs Sigmoid forward pass
+        
+        :input_: Input tensor from previous layer output
+
+        :returns: Sigmoid activation applied on input
+        '''
+        # Apply sigmoid
+        sigma = input_.sigmoid()
+        # Save for backward pass
+        self.sigma = sigma.clone()
+        return sigma
+    
+    def backward(self, d_out: torch.Tensor):
+        '''Performs Sigmoid backward pass
+        
+        :d_out: Derivatives from the next layer
+
+        :returns: Gradient w.r.t. input
+        '''
+        return d_out * (self.sigma * (1 - self.sigma))
+    
+    def param(self):
+        '''Sigmoid is a parameterless module'''
+        return []
+
+class MSE(Module):
+    '''MSE loss'''
+    def forward(self, input_: torch.Tensor, target: torch.Tensor):
+        '''Performs MSE forward pass
+        
+        :input_: Output from previous layer
+
+        :target: True labels
+
+        :returns: Mean squared error w.r.t. input and target labels
+        '''
+        # Compute error
+        error = target.sub(input_)
+        # Save error tensor for backward pass
+        self.error = error.clone()
+        # Compute MSE
+        return error.pow(2).mean()
+
+    def backward(self):
+        '''Performs MSE backwards pass
+        
+        :returns: MSE gradient
+        '''
+        return self.error.mean().mul(2)
+
+    def param(self):
+        '''MSE is a parameterless module'''
+        return []
+        
+
+# TODO: Modules Conv2d, TransposeConv2d, NearestUpsampling, SGD, Sequential
