@@ -2,7 +2,9 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"load_images": "00_helpers.ipynb",
+index = {"RandomResizedCrop": "00_augmentation.ipynb",
+         "RandomRotation": "00_augmentation.ipynb",
+         "load_images": "00_helpers.ipynb",
          "to_float_image": "00_helpers.ipynb",
          "to_rgb_image": "00_helpers.ipynb",
          "show_img": "00_helpers.ipynb",
@@ -22,7 +24,8 @@ index = {"load_images": "00_helpers.ipynb",
          "Unet": "00_unet.ipynb",
          "UnetBatchNorm": "00_unet.ipynb"}
 
-modules = ["helpers.py",
+modules = ["augmentation.py",
+           "helpers.py",
            "training.py",
            "unet.py"]
 

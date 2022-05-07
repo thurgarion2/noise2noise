@@ -124,8 +124,10 @@ class UnetBatchNorm(nn.Module):
         self.bottom = nn.Sequential(
             nn.Conv2d(128, 128, 3, padding=1),
             nn.ReLU(),
+            nn.BatchNorm2d(128),
             nn.Conv2d(128, 128, 3, padding=1),
-            nn.ReLU()
+            nn.ReLU(),
+            nn.BatchNorm2d(128)
         )
 
         self.block_up_1 = UnetBlockUpBatchNorm(128,64)

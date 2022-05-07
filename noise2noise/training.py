@@ -24,21 +24,27 @@ class ToFloatImage:
 
 # Cell
 class Noise2NoiseDataset(Dataset):
-    def __init__(self, img_path, transform=None, target_transform=None):
+    def __init__(self, img_path, transform=None, target_transform=None, input_target_transforms = None, device = None):
 
         self.imgs, self.targets = load_images(img_path)
         self.transform = transform
         self.target_transform = target_transform
+        self.input_target_transforms = input_target_transforms
+
 
     def __len__(self):
         return len(self.imgs)
 
     def __getitem__(self, idx):
         image, target = self.imgs[idx], self.targets[idx]
+
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
             target = self.target_transform(target)
+        if self.input_target_transforms:
+            image, target = self.input_target_transforms((image,target))
+
         return image, target
 
 # Cell

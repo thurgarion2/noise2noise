@@ -1,6 +1,7 @@
 {
   "noise2noise": {
     "Overview": "/",
+    "Title": "augmentation.html",
     "Baseline": "baseline.html",
     "Helpers": "helpers.html",
     "Training": "training.html",
