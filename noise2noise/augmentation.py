@@ -37,11 +37,12 @@ class RandomRotation():
         pass
 
     def apply_transform(self,image,target):
-        angle = transforms.transforms.RandomRotation([360/(i) for i in range(2,12)])
+        angle = transforms.RandomRotation.get_params([0,360])
 
 
         trans_image = TF.rotate(image, angle)
         trans_target = TF.rotate(target, angle)
+
 
         return trans_image, trans_target
     def __call__(self, imgs):
