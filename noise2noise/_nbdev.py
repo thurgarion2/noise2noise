@@ -22,12 +22,17 @@ index = {"RandomResizedCrop": "00_augmentation.ipynb",
          "UnetBlockDownBatchNorm": "00_unet.ipynb",
          "UnetBlockUpBatchNorm": "00_unet.ipynb",
          "Unet": "00_unet.ipynb",
-         "UnetBatchNorm": "00_unet.ipynb"}
+         "UnetBatchNorm": "00_unet.ipynb",
+         "ResNetBlock": "00_unet_resnet.ipynb",
+         "ResizeBlock": "00_unet_resnet.ipynb",
+         "ResNetUnet": "00_unet_resnet.ipynb",
+         "ResNetUnetNotPretrained": "00_unet_resnet.ipynb"}
 
 modules = ["augmentation.py",
            "helpers.py",
            "training.py",
-           "unet.py"]
+           "unet.py",
+           "unet_resnet.py"]
 
 doc_url = "https://thurgarion2.github.io/noise2noise/"
 
