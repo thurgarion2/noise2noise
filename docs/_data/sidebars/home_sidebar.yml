@@ -10,7 +10,7 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Title
+      title: Augmentations
       url: augmentation.html
     - output: web,pdf
       title: Baseline
@@ -24,6 +24,9 @@ entries:
     - output: web,pdf
       title: Unet
       url: unet.html
+    - output: web,pdf
+      title: Unet resnet
+      url: unet_resnet.html
     output: web
     title: noise2noise
   output: web

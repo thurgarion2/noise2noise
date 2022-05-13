@@ -16,7 +16,7 @@ To set up your environement, you need :
 
 ```python
 noisy_imgs_1 , noisy_imgs_2 = load_images()
-show_img(noisy_imgs_1[0])
+show_img(to_float_image(noisy_imgs_1[0]))
 ```
 
 

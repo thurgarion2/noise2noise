@@ -1,10 +1,11 @@
 {
   "noise2noise": {
     "Overview": "/",
-    "Title": "augmentation.html",
+    "Augmentations": "augmentation.html",
     "Baseline": "baseline.html",
     "Helpers": "helpers.html",
     "Training": "training.html",
-    "Unet": "unet.html"
+    "Unet": "unet.html",
+    "Unet resnet": "unet_resnet.html"
   }
 }
