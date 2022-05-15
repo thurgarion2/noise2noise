@@ -25,8 +25,11 @@ index = {"RandomResizedCrop": "00_augmentation.ipynb",
          "UnetBatchNorm": "00_unet.ipynb",
          "ResNetBlock": "00_unet_resnet.ipynb",
          "ResizeBlock": "00_unet_resnet.ipynb",
+         "UpBlock": "00_unet_resnet.ipynb",
+         "DownBlock": "00_unet_resnet.ipynb",
          "ResNetUnet": "00_unet_resnet.ipynb",
-         "ResNetUnetNotPretrained": "00_unet_resnet.ipynb"}
+         "ResNetUnetNotPretrained": "00_unet_resnet.ipynb",
+         "ResNet": "00_unet_resnet.ipynb"}
 
 modules = ["augmentation.py",
            "helpers.py",
