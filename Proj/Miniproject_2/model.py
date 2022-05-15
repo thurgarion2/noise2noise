@@ -2,8 +2,12 @@ import torch
 from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 
+from pathlib import Path
+
 # We turn autograd globally off
 torch.set_grad_enabled(False)
+# Control randomness for reproducibility
+torch.manual_seed(42)
 
 class Module(object):
     '''Suggested simple structure for implemented modules to inherit.
@@ -22,35 +26,6 @@ class Module(object):
         '''Should return a list of pairs composed of a parameter tensor and a gradient 
         tensor of the same size. This list should be empty for parameterless modules (such as ReLU).'''
         return []
-    
-class Model():
-    def __init__(self) -> None:
-        '''Instantiate model + optimizer + loss function + any other stuff needed'''
-        pass
-
-    def load_pretrained_model(self) -> None:
-        '''This loads the parameters saved in bestmodel.pth into the model'''
-        pass
-
-    def train(self, train_input, train_target, num_epochs) -> None:
-        '''
-        :train_input: tensor of size (N, C, H, W) containing a noisy version of the images
-
-        :train_target: tensor of size (N, C, H, W) containing another noisy version of the same
-        images, which only differs from the input by their noise
-
-        :num_epochs: number of training epochs
-        '''
-        pass
-
-    def predict(self, test_input) -> torch.Tensor:
-        '''
-        :test_input: tensor of size (N1, C, H, W) with values in range 0-255 that has to
-        be denoised by the trained or the loaded network.
-
-        :returns a tensor of size (N1, C, H, W) with values in range 0-255
-        '''
-        pass
 
 class ReLU(Module):
     '''ReLU activation'''
@@ -106,6 +81,65 @@ class Sigmoid(Module):
     def param(self):
         '''Sigmoid is a parameterless module'''
         return []
+
+class Linear(Module):
+    '''Linear layer'''
+    def __init__(self, in_features, out_features):
+        '''Linear constructor
+        
+        :in_features: size of each input sample
+
+        :out_features: size of each output sample
+        '''
+        # Initialize weights and bias
+        sqrt_k = (1.0 / in_features) ** .5
+        self.W = empty((out_features, in_features)).uniform_(-sqrt_k, sqrt_k)
+        self.b = empty((out_features, 1)).uniform_(-sqrt_k, sqrt_k)
+
+        # Initialize weights & bias gradients
+        self.dW = self.W.new_zeros(self.W.size)
+        self.db = self.b.new_zeros(self.b.size)
+
+    def forward(self, input_: torch.Tensor):
+        '''Applies linear transformation to incoming data
+        
+        :input_: Input tensor from previous layer output
+
+        :returns: Linear transformation w.r.t weights and bias
+        '''
+        x = input_.clone()
+        # Save x for backwards pass
+        self.input_ = x
+        # Apply transformation
+        return self.W.mm(x).add(self.b)
+        
+
+    def backward(self, d_out): # TODO check correctness
+        '''Linear backward pass
+        
+        :d_out: Gradient from next layer
+
+        :returns: Loss gradient w.r.t input
+        '''
+        # Update weight and bias gradient
+        self.dW = d_out.mm(self.input_.T)
+        self.db = d_out.clone()
+        
+        return self.W.T.mm(d_out)
+
+    def param(self):
+        '''Return weight and bias parameters'''
+        return [(self.W, self.dW), (self.b, self.db)]
+
+class Conv2d(Module): # TODO
+    '''Conv2d module implemented by a linear function'''
+    def __init__(self, stride):
+        pass
+
+# TODO class TransposeConv2d or NearestUpsampling
+
+class Upsampling(Module): # TODO
+    pass
 
 class MSE(Module):
     '''Mean squared error loss'''
@@ -195,5 +229,92 @@ class Sequential(Module):
         
         return param_list
 
+class SGD:
+    '''Stochastic gradient descent optimizer'''
+    def __init__(self, params, learning_rate=0.05):
+        '''SGD optimizer constructor
+        
+        :params: (iterable) - iterable of parameters to optimize
 
-# TODO: Modules Conv2d, TransposeConv2d, NearestUpsampling, SGD
+        :learning_rate: (float) - learning rate, default = 0.05
+        '''
+        self.params = params
+        self.lr = learning_rate
+
+    def zero_grad(self):
+        '''Sets the gradients of all optimized torch.Tensor to 0'''
+        for _, g in self.params:
+            g.zero_()
+
+    def step(self):
+        '''Performs single optimization step'''
+        for p, g in self.params:
+            p -= self.lr * g
+
+class Model():
+    '''Model'''
+    def __init__(self) -> None:
+        '''Instantiate model + optimizer + loss function + any other stuff needed'''
+        # Instantiate model
+        self.model = Sequential(
+            Conv2d(stride=2),
+            ReLU,
+            Conv2d(stide=2),
+            ReLU,
+            Upsampling,
+            ReLU,
+            Upsampling,
+            Sigmoid
+        )
+        # Instantiate optimizer
+        self.optimizer = SGD(self.model.param())
+        # Choose loss function
+        self.criterion = MSE
+
+        # Default mini batch size
+        self.batch_size = 100
+
+        # Default path to save model
+        self.model_path = Path(__file__).parent / "bestmodel.pth"
+
+    def load_pretrained_model(self) -> None:
+        '''This loads the parameters saved in bestmodel.pth into the model'''
+        self.model = torch.load(self.model_path) # TODO adapt with how best model is saved
+
+    def train(self, train_input: torch.Tensor, train_target: torch.Tensor, 
+        num_epochs=50, verbose=False) -> None:
+        ''' Train model
+
+        :train_input: tensor of size (N, C, H, W) containing a noisy version of the images
+
+        :train_target: tensor of size (N, C, H, W) containing another noisy version of the same
+        images, which only differs from the input by their noise
+
+        :num_epochs: (int) number of training epochs, default = 50
+
+        :verbose: (bool) Choice of verbose execution, default = False
+        '''
+        for e in range(num_epochs):
+            epoch_loss = 0.0
+            for inputs, targets in zip(train_input.split(self.batch_size), 
+                                       train_target.split(self.batch_size)):
+                output = self.model.forward(inputs)
+                epoch_loss += self.criterion.forward(output, targets)
+                self.optimizer.zero_grad()
+                d_loss = self.criterion.backward()
+                self.model.backward(d_loss)
+                self.optimizer.step()
+
+            if verbose:
+                print(f'Epoch #{e+1}: MSE Loss = {epoch_loss:.6f}')
+            # TODO: save bestmodel: torch.save(self.model, self.model_path)
+
+
+    def predict(self, test_input) -> torch.Tensor:
+        '''
+        :test_input: tensor of size (N1, C, H, W) with values in range 0-255 that has to
+        be denoised by the trained or the loaded network.
+
+        :returns a tensor of size (N1, C, H, W) with values in range 0-255
+        '''
+        return self.model.forward(test_input).clamp(0., 255.) # TODO check correctness
