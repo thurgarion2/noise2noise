@@ -1,6 +1,7 @@
 {
   "noise2noise": {
     "Overview": "/",
+    "Architectures": "architecture_to_test.html",
     "Augmentations": "augmentation.html",
     "Baseline": "baseline.html",
     "Helpers": "helpers.html",

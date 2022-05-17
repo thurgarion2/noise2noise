@@ -31,7 +31,10 @@ def show_img(float_img, axis=None):
         plt.imshow(rgb_img.permute(1, 2, 0) )
 
 # Cell
-def psnr(denoised , ground_truth):
+def psnr(denoised , ground_truth, dim=None):
     # Peak Signal to Noise Ratio : denoised and ground_truth have range [0 , 1]
-    mse = torch. mean(( denoised - ground_truth ) ** 2)
+    if dim:
+        mse = torch.mean(( denoised - ground_truth ) ** 2, dim=dim)
+    else:
+        mse = torch.mean(( denoised - ground_truth ) ** 2)
     return -10 * torch.log10( mse + 10**-8)
