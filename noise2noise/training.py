@@ -71,6 +71,7 @@ def train(model,
 
 
     for steps in tqdm(range(gradient_steps)):
+
         input, target = None, None
         try:
             input, target = iterator.next()
@@ -85,6 +86,7 @@ def train(model,
         optim.step()
 
         if (steps+1)%samples_steps==0:
+
             if train_loader:
               train_loss.append((steps, eval_model(model, train_loader, criterion, max_iter=5)))
             if test_loader:
@@ -157,10 +159,12 @@ def show_worst(model, dataloader, nb_cols=3, nb_rows=2):
     _, axis = plt.subplots(nb_rows,nb_cols*2, figsize=(nb_cols*6,3*nb_cols))
     nb_examples = nb_cols*nb_rows
     psnrs = []
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
     with torch.no_grad():
         for input, target in iter(dataloader):
+            input, target = input.to(device), target.to(device)
             output = model(input)
             for i, p in enumerate(psnr(output , target, dim=[1,2,3])):
                 psnrs.append((p,(output[i],target[i])))
@@ -178,10 +182,12 @@ def show_worst(model, dataloader, nb_cols=3, nb_rows=2):
 
 def plot_psnr_distribution(model, dataloader):
     psnrs = []
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
     with torch.no_grad():
         for input, target in iter(dataloader):
+            input, target = input.to(device), target.to(device)
             output = model(input)
             psnrs.extend(psnr(output , target, dim=[1,2,3]).tolist())
     plt.hist(psnrs, bins=30)

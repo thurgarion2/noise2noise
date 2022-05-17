@@ -41,7 +41,7 @@ class ResNet(nn.Module):
             ResNetBlock(128)
         )
 
-        self.resblocks = nn.Sequential(*[ResNetBlock(128) for loop in range(4)])
+        self.resblocks = nn.Sequential(*[ResNetBlock(128) for loop in range(2)])
 
         self.to_3 = nn.Sequential(
             nn.Conv2d(128, 3, kernel_size=(3, 3), padding=(1, 1), bias=False),
