@@ -115,7 +115,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>torch.Size([2, 3, 32, 32])</pre>
+<pre>torch.Size([1, 3, 32, 32])</pre>
 </div>
 
 </div>
@@ -149,7 +149,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>torch.Size([2, 3, 32, 32])</pre>
+<pre>torch.Size([1, 3, 32, 32])</pre>
 </div>
 
 </div>
@@ -171,7 +171,96 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ResNet" class="doc_header"><code>class</code> <code>ResNet</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L29" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResNet</code>() :: <code>Module</code></p>
+<h2 id="ConvNet" class="doc_header"><code>class</code> <code>ConvNet</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L29" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ConvNet</code>() :: <code>Module</code></p>
+</blockquote>
+<p>Base class for all neural network modules.</p>
+<p>Your models should also subclass this class.</p>
+<p>Modules can also contain other Modules, allowing to nest them in
+a tree structure. You can assign the submodules as regular attributes::</p>
+
+<pre><code>import torch.nn as nn
+import torch.nn.functional as F
+
+class Model(nn.Module):
+    def __init__(self):
+        super(Model, self).__init__()
+        self.conv1 = nn.Conv2d(1, 20, 5)
+        self.conv2 = nn.Conv2d(20, 20, 5)
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        return F.relu(self.conv2(x))
+
+</code></pre>
+<p>Submodules assigned in this way will be registered, and will have their
+parameters converted too when you call :meth:<code>to</code>, etc.</p>
+<p>:ivar training: Boolean represents whether this module is in training or
+                evaluation mode.
+:vartype training: bool</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">ConvNet</span><span class="p">()</span>
+<span class="n">model</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([1, 3, 32, 32])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="ResNet" class="doc_header"><code>class</code> <code>ResNet</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L47" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResNet</code>() :: <code>Module</code></p>
 </blockquote>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -238,7 +327,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>torch.Size([2, 3, 32, 32])</pre>
+<pre>torch.Size([1, 3, 32, 32])</pre>
 </div>
 
 </div>
@@ -260,7 +349,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Unet" class="doc_header"><code>class</code> <code>Unet</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L60" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Unet</code>() :: <code>Module</code></p>
+<h2 id="Unet" class="doc_header"><code>class</code> <code>Unet</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L80" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Unet</code>() :: <code>Module</code></p>
 </blockquote>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -328,6 +417,95 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 <div class="output_text output_subarea output_execute_result">
 <pre>torch.Size([2, 3, 32, 32])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="UnetWithSigmoid" class="doc_header"><code>class</code> <code>UnetWithSigmoid</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/architectures.py#L139" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UnetWithSigmoid</code>() :: <code>Module</code></p>
+</blockquote>
+<p>Base class for all neural network modules.</p>
+<p>Your models should also subclass this class.</p>
+<p>Modules can also contain other Modules, allowing to nest them in
+a tree structure. You can assign the submodules as regular attributes::</p>
+
+<pre><code>import torch.nn as nn
+import torch.nn.functional as F
+
+class Model(nn.Module):
+    def __init__(self):
+        super(Model, self).__init__()
+        self.conv1 = nn.Conv2d(1, 20, 5)
+        self.conv2 = nn.Conv2d(20, 20, 5)
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        return F.relu(self.conv2(x))
+
+</code></pre>
+<p>Submodules assigned in this way will be registered, and will have their
+parameters converted too when you call :meth:<code>to</code>, etc.</p>
+<p>:ivar training: Boolean represents whether this module is in training or
+                evaluation mode.
+:vartype training: bool</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">UnetWithSigmoid</span><span class="p">()</span>
+<span class="n">model</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([1, 3, 32, 32])</pre>
 </div>
 
 </div>

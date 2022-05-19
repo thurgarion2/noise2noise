@@ -3,8 +3,10 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"ResNetBlock": "00_unet_resnet.ipynb",
+         "ConvNet": "00_architecture_to_test.ipynb",
          "ResNet": "00_unet_resnet.ipynb",
          "Unet": "00_unet.ipynb",
+         "UnetWithSigmoid": "00_architecture_to_test.ipynb",
          "RandomResizedCrop": "00_augmentation.ipynb",
          "RandomRotation": "00_augmentation.ipynb",
          "load_images": "00_helpers.ipynb",
