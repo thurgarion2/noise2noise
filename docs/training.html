@@ -200,7 +200,7 @@ nb_path: "00_training.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Noise2NoiseDataset" class="doc_header"><code>class</code> <code>Noise2NoiseDataset</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Noise2NoiseDataset</code>(<strong><code>img_path</code></strong>, <strong><code>transform</code></strong>=<em><code>None</code></em>, <strong><code>target_transform</code></strong>=<em><code>None</code></em>, <strong><code>input_target_transforms</code></strong>=<em><code>None</code></em>, <strong><code>nb_samples</code></strong>=<em><code>None</code></em>) :: <code>Dataset</code></p>
+<h2 id="Noise2NoiseDataset" class="doc_header"><code>class</code> <code>Noise2NoiseDataset</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Noise2NoiseDataset</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwds</code></strong>) :: <code>Dataset</code></p>
 </blockquote>
 <p>An abstract class representing a :class:<code>Dataset</code>.</p>
 <p>All datasets that represent a map from keys to data samples should subclass
@@ -297,7 +297,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="eval_model" class="doc_header"><code>eval_model</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L103" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>eval_model</code>(<strong><code>model</code></strong>, <strong><code>loader</code></strong>, <strong><code>metric</code></strong>, <strong><code>max_iter</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="eval_model" class="doc_header"><code>eval_model</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>eval_model</code>(<strong><code>model</code></strong>, <strong><code>loader</code></strong>, <strong><code>metric</code></strong>, <strong><code>max_iter</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -392,7 +392,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_results" class="doc_header"><code>show_results</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L131" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_results</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>, <strong><code>nb_cols</code></strong>=<em><code>3</code></em>, <strong><code>nb_rows</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="show_results" class="doc_header"><code>show_results</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L133" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_results</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>, <strong><code>nb_cols</code></strong>=<em><code>3</code></em>, <strong><code>nb_rows</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 
 </div>
@@ -458,7 +458,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_worst" class="doc_header"><code>show_worst</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L156" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_worst</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>, <strong><code>nb_cols</code></strong>=<em><code>3</code></em>, <strong><code>nb_rows</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="show_worst" class="doc_header"><code>show_worst</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_worst</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>, <strong><code>nb_cols</code></strong>=<em><code>3</code></em>, <strong><code>nb_rows</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 
 </div>
@@ -524,7 +524,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="plot_psnr_distribution" class="doc_header"><code>plot_psnr_distribution</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L179" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_psnr_distribution</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>)</p>
+<h4 id="plot_psnr_distribution" class="doc_header"><code>plot_psnr_distribution</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L183" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_psnr_distribution</code>(<strong><code>model</code></strong>, <strong><code>dataloader</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -590,7 +590,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="plot_psnr" class="doc_header"><code>plot_psnr</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L193" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_psnr</code>(<strong><code>psnrs</code></strong>, <strong><code>labels</code></strong>, <strong><code>axis</code></strong>)</p>
+<h4 id="plot_psnr" class="doc_header"><code>plot_psnr</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L199" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_psnr</code>(<strong><code>psnrs</code></strong>, <strong><code>labels</code></strong>, <strong><code>axis</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -657,7 +657,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="plot_losses" class="doc_header"><code>plot_losses</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L204" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_losses</code>(<strong><code>train_losses</code></strong>, <strong><code>test_losses</code></strong>, <strong><code>test_metric</code></strong>)</p>
+<h4 id="plot_losses" class="doc_header"><code>plot_losses</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L210" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_losses</code>(<strong><code>train_losses</code></strong>, <strong><code>test_losses</code></strong>, <strong><code>test_metric</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -723,7 +723,7 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="lr_finder" class="doc_header"><code>lr_finder</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L224" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>lr_finder</code>(<strong><code>model</code></strong>, <strong><code>loader</code></strong>, <strong><code>optim_class</code></strong>, <strong><code>criterion</code></strong>, <strong><code>gradient_steps</code></strong>=<em><code>1000</code></em>, <strong><code>samples_steps</code></strong>=<em><code>100</code></em>, <strong><code>lr_steps</code></strong>=<em><code>10</code></em>)</p>
+<h4 id="lr_finder" class="doc_header"><code>lr_finder</code><a href="https://github.com/thurgarion2/noise2noise/tree/{branch}/noise2noise/training.py#L230" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>lr_finder</code>(<strong><code>model</code></strong>, <strong><code>loader</code></strong>, <strong><code>optim_class</code></strong>, <strong><code>criterion</code></strong>, <strong><code>gradient_steps</code></strong>=<em><code>1000</code></em>, <strong><code>samples_steps</code></strong>=<em><code>100</code></em>, <strong><code>lr_steps</code></strong>=<em><code>10</code></em>)</p>
 </blockquote>
 
 </div>
@@ -765,5 +765,5 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
     {% endraw %}
 
 </div>
- 
+
 

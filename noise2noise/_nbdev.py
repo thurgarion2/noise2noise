@@ -2,13 +2,11 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"ResNetBlock": "00_unet_resnet.ipynb",
+index = {"ResNetBlock": "00_architecture_to_test.ipynb",
          "ConvNet": "00_architecture_to_test.ipynb",
-         "ResNet": "00_unet_resnet.ipynb",
-         "Unet": "00_unet.ipynb",
+         "ResNet": "00_architecture_to_test.ipynb",
+         "Unet": "00_architecture_to_test.ipynb",
          "UnetWithSigmoid": "00_architecture_to_test.ipynb",
-         "RandomResizedCrop": "00_augmentation.ipynb",
-         "RandomRotation": "00_augmentation.ipynb",
          "load_images": "00_helpers.ipynb",
          "to_float_image": "00_helpers.ipynb",
          "to_rgb_image": "00_helpers.ipynb",
@@ -26,24 +24,11 @@ index = {"ResNetBlock": "00_unet_resnet.ipynb",
          "plot_psnr_distribution": "00_training.ipynb",
          "plot_psnr": "00_training.ipynb",
          "plot_losses": "00_training.ipynb",
-         "lr_finder": "00_training.ipynb",
-         "UnetBlockDown": "00_unet.ipynb",
-         "UnetBlockUp": "00_unet.ipynb",
-         "UnetBlockDownBatchNorm": "00_unet.ipynb",
-         "UnetBlockUpBatchNorm": "00_unet.ipynb",
-         "UnetBatchNorm": "00_unet.ipynb",
-         "ResizeBlock": "00_unet_resnet.ipynb",
-         "UpBlock": "00_unet_resnet.ipynb",
-         "DownBlock": "00_unet_resnet.ipynb",
-         "ResNetUnet": "00_unet_resnet.ipynb",
-         "ResNetUnetNotPretrained": "00_unet_resnet.ipynb"}
+         "lr_finder": "00_training.ipynb"}
 
 modules = ["architectures.py",
-           "augmentation.py",
            "helpers.py",
-           "training.py",
-           "unet.py",
-           "unet_resnet.py"]
+           "training.py"]
 
 doc_url = "https://thurgarion2.github.io/noise2noise/"
 

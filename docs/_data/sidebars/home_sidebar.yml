@@ -13,9 +13,6 @@ entries:
       title: Architectures
       url: architecture_to_test.html
     - output: web,pdf
-      title: Augmentations
-      url: augmentation.html
-    - output: web,pdf
       title: Baseline
       url: baseline.html
     - output: web,pdf
@@ -24,12 +21,6 @@ entries:
     - output: web,pdf
       title: Training
       url: training.html
-    - output: web,pdf
-      title: Unet
-      url: unet.html
-    - output: web,pdf
-      title: Unet resnet
-      url: unet_resnet.html
     output: web
     title: noise2noise
   output: web

@@ -20,7 +20,9 @@ show_img(to_float_image(noisy_imgs_1[0]))
 ```
 
 
+    
 ![png](docs/images/output_4_0.png)
+    
 
 
 ## Create a module

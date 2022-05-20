@@ -2,11 +2,8 @@
   "noise2noise": {
     "Overview": "/",
     "Architectures": "architecture_to_test.html",
-    "Augmentations": "augmentation.html",
     "Baseline": "baseline.html",
     "Helpers": "helpers.html",
-    "Training": "training.html",
-    "Unet": "unet.html",
-    "Unet resnet": "unet_resnet.html"
+    "Training": "training.html"
   }
 }
