@@ -13,9 +13,6 @@ entries:
       title: Architectures
       url: architecture_to_test.html
     - output: web,pdf
-      title: Baseline
-      url: baseline.html
-    - output: web,pdf
       title: Helpers
       url: helpers.html
     - output: web,pdf
