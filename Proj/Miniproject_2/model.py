@@ -39,7 +39,7 @@ class ReLU(Module):
         # Save input for backward pass
         self.input_ = input_.clone()
         # Apply ReLU = max(0, x)
-        return input_.maximum(input_.new_zeros(input_.size()))
+        return input_.max(input_.new_zeros(input_.size()))
 
     def backward(self, d_out: torch.Tensor):
         '''Performs ReLU backward pass
@@ -97,8 +97,8 @@ class Linear(Module):
         self.b = empty((out_features, 1)).uniform_(-sqrt_k, sqrt_k)
 
         # Initialize weights & bias gradients
-        self.dW = self.W.new_zeros(self.W.size)
-        self.db = self.b.new_zeros(self.b.size)
+        self.dW = self.W.new_zeros(self.W.size())
+        self.db = self.b.new_zeros(self.b.size())
 
     def forward(self, input_: torch.Tensor):
         '''Applies linear transformation to incoming data
@@ -133,12 +133,36 @@ class Linear(Module):
 
 class Conv2d(Module): # TODO
     '''Conv2d module implemented by a linear function'''
-    def __init__(self, stride):
+    def __init__(self, in_channels, out_channels, kernel_size=(2, 2), stride=1):
+        '''Conv2d module constructor
+        
+        :in_channels: (int) Number of channels in the input image
+
+        :out_channels: (int) Number of channels produced by the convolution
+
+        :kernel_size: (tuple) Size of the convolving kernel
+
+        :stride: (int) Stride of the convolution
+        '''
         pass
 
-# TODO class TransposeConv2d or NearestUpsampling
+    def forward(self, input_):
+        pass
 
-class Upsampling(Module): # TODO
+    def backward(self, d_out):
+        pass
+
+class TransposeConv2d(Module): # TODO
+    def __init__(self):
+        pass
+
+    def forward(self):
+        pass
+
+    def backward(self):
+        pass
+
+class Upsampling(Module): # TODO (underlying is transposeConv2d)
     pass
 
 class MSE(Module):
@@ -279,7 +303,8 @@ class Model():
 
     def load_pretrained_model(self) -> None:
         '''This loads the parameters saved in bestmodel.pth into the model'''
-        self.model = torch.load(self.model_path) # TODO adapt with how best model is saved
+        self.model = torch.load(self.model_path)
+        self.optimizer = SGD(self.model.param())
 
     def train(self, train_input: torch.Tensor, train_target: torch.Tensor, 
         num_epochs=50, verbose=False) -> None:
