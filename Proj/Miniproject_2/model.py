@@ -109,7 +109,7 @@ class Linear(Module):
         :returns: Linear transformation w.r.t weights and bias
         '''
         # Save x for backwards pass
-        self.input_ = input_.clone
+        self.input_ = input_.clone()
 
         # Apply transformation
         return self.W @ input_ + self.b
@@ -161,13 +161,19 @@ class Conv2d(Module): # TODO
         self.db = self.b.new_zeros(self.b.size())
 
     def forward(self, input_):
+        '''Conv2d forward pass
+        
+        :input_: (torch.Tensor) Input tensor to apply convolution on, with size (N, C_in, H, W)
+
+        :returns: 2D convolution applied on input signal, with size (N, C_out, H_out, W_out)
+        '''
         # Clone the input for the gradients
-        self.current_input = input_.clone()
+        self.input_ = input_.clone()
 
         input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
         input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, -1, 1)
         return input_convolved.view(
-            -1, # B
+            -1, # |B|
             self.out_channels, # C_out
             math.floor((input_.shape[2] - self.kernel_size[0])/self.stride) + 1, # H_out
             math.floor((input_.shape[3] - self.kernel_size[1])/self.stride)+ 1   # W_out
@@ -176,7 +182,9 @@ class Conv2d(Module): # TODO
 
     def backward(self, d_out):
         # Update bias gradient
-        self.db.add_(d_out.sum([0, 2, 3]))
+        self.db += d_out.sum([0, 2, 3])
+        # Update weight gradient
+
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
@@ -235,7 +243,7 @@ class MSE(Module):
         
         :returns: MSE gradient
         '''
-        return self.error.mean().mul(2)
+        return self.error.mean().mul(-2)
 
     def param(self):
         '''MSE is a parameterless module'''
@@ -379,7 +387,8 @@ class Model():
 
             if verbose:
                 print(f'Epoch #{e+1}: MSE Loss = {epoch_loss:.6f}')
-            # TODO: save bestmodel: torch.save(self.model, self.model_path)
+            # Save
+            torch.save(self.model, self.model_path)
 
 
     def predict(self, test_input) -> torch.Tensor:
