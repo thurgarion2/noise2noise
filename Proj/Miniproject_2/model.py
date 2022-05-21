@@ -108,11 +108,11 @@ class Linear(Module):
 
         :returns: Linear transformation w.r.t weights and bias
         '''
-        x = input_.clone()
         # Save x for backwards pass
-        self.input_ = x
+        self.input_ = input_.clone
+        
         # Apply transformation
-        return self.W.mm(x).add(self.b)
+        return self.W.mm(input_).add(self.b)
         
 
     def backward(self, d_out): # TODO check correctness
