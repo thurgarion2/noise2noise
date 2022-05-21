@@ -49,7 +49,7 @@ class Noise2NoiseDataset(Dataset):
 
 # Cell
 def psnr_metric():
-    return lambda denoised , ground_truth: psnr(denoised.clip(0,1) , ground_truth)
+    return lambda denoised , ground_truth: psnr(denoised.clip(0,1) , ground_truth, single=False)
 
 # Cell
 def train(model,
@@ -113,6 +113,7 @@ def eval_model(model, loader, metric, max_iter=None):
             output = model(input)
             losses.append(metric(output, target).item())
 
+
             if max_iter and i>=max_iter:
                 break
 
@@ -165,7 +166,7 @@ def show_worst(model, dataloader, nb_cols=3, nb_rows=2):
         for input, target in iter(dataloader):
             input, target = input.to(device), target.to(device)
             output = model(input)
-            for i, p in enumerate(psnr(output , target, dim=[1,2,3])):
+            for i, p in enumerate(psnr(output , target, single=False, average=False)):
                 psnrs.append((p,(output[i],target[i])))
 
 
@@ -188,7 +189,7 @@ def plot_psnr_distribution(model, dataloader):
         for input, target in iter(dataloader):
             input, target = input.to(device), target.to(device)
             output = model(input)
-            psnrs.extend(psnr(output , target, dim=[1,2,3]).tolist())
+            psnrs.extend(psnr(output , target, single=False, average=False).tolist())
     plt.hist(psnrs, bins=30)
     plt.xlabel('psnr')
     plt.ylabel('number images')
