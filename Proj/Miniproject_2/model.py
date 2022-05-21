@@ -108,11 +108,11 @@ class Linear(Module):
 
         :returns: Linear transformation w.r.t weights and bias
         '''
-        x = input_.clone()
         # Save x for backwards pass
-        self.input_ = x
+        self.input_ = input_.clone
+
         # Apply transformation
-        return self.W.mm(x).add(self.b)
+        return self.W @ input_ + self.b
         
 
     def backward(self, d_out): # TODO check correctness
@@ -183,14 +183,31 @@ class Conv2d(Module): # TODO
         return [(self.W, self.dW), (self.b, self.db)]
 
 class TransposeConv2d(Module): # TODO
-    def __init__(self):
-        pass
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+        self.stride = stride
+
+        # Initialize weights & bias
+        sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
+
+        self.W = empty((out_channels, in_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.b = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
+
+        # Initialize weights & bias gradients
+        self.dW = self.W.new_zeros(self.W.size())
+        self.db = self.b.new_zeros(self.b.size())
 
     def forward(self):
         pass
 
     def backward(self):
         pass
+
+    def param(self):
+        '''Return TransposeConv2d weight and bias parameters'''
+        return [(self.W, self.dW), (self.b, self.db)]
 
 class Upsampling(Module): # TODO (underlying is transposeConv2d)
     pass
