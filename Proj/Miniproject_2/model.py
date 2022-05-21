@@ -1,6 +1,7 @@
 import torch
 from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
+import math
 
 from pathlib import Path
 
@@ -143,11 +144,37 @@ class Conv2d(Module): # TODO
         :kernel_size: (tuple) Size of the convolving kernel
 
         :stride: (int) Stride of the convolution
+
+        :returns: Convolution of the input with the kernel
         '''
-        pass
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+        self.stride = stride
+
+        # Initialize weights & bias
+        sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
+
+        self.W = empty((out_channels, in_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.b = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
+
+        # Initialize weights & bias gradients
+        self.dW = self.W.new_zeros(self.W.size())
+        self.db = self.b.new_zeros(self.b.size())
 
     def forward(self, input_):
-        pass
+        # Clone the input for the gradients
+        self.current_input = input_.clone()
+
+        input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
+        input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, 1, -1, 1)
+        return input_convolved.view(
+            -1, # B
+            self.out_channels, # C_out
+            math.floor((input_.shape[2] - self.kernel_size[0])/self.stride) + 1, # H_out
+            math.floor((input_.shape[3] - self.kernel_size[1])/self.stride)+ 1   # W_out
+        )
+
 
     def backward(self, d_out):
         pass
