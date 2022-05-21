@@ -165,7 +165,7 @@ class Conv2d(Module): # TODO
         self.current_input = input_.clone()
 
         input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
-        input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, 1, -1, 1)
+        input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, -1, 1)
         return input_convolved.view(
             -1, # B
             self.out_channels, # C_out
@@ -176,7 +176,7 @@ class Conv2d(Module): # TODO
 
     def backward(self, d_out):
         # Update bias gradient
-        print(d_out.sum(0).shape)
+        self.db.add_(d_out.sum([0, 2, 3]))
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
