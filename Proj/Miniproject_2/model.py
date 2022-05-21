@@ -134,18 +134,16 @@ class Linear(Module):
 
 class Conv2d(Module): # TODO
     '''Conv2d module implemented by a linear function'''
-    def __init__(self, in_channels, out_channels, kernel_size=(2, 2), stride=1):
+    def __init__(self, in_channels=3, out_channels=3, kernel_size=(2, 2), stride=1):
         '''Conv2d module constructor
         
-        :in_channels: (int) Number of channels in the input image
+        :in_channels: (int) Number of channels in the input image, default = 3
 
-        :out_channels: (int) Number of channels produced by the convolution
+        :out_channels: (int) Number of channels produced by the convolution, default = 3
 
-        :kernel_size: (tuple) Size of the convolving kernel
+        :kernel_size: (tuple) Size of the convolving kernel, default = (2, 2)
 
-        :stride: (int) Stride of the convolution
-
-        :returns: Convolution of the input with the kernel
+        :stride: (int) Stride of the convolution, default = 1
         '''
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -177,7 +175,12 @@ class Conv2d(Module): # TODO
 
 
     def backward(self, d_out):
-        pass
+        # Update bias gradient
+        print(d_out.sum(0).shape)
+
+    def param(self):
+        '''Return Conv2d weight and bias parameters'''
+        return [(self.W, self.dW), (self.b, self.db)]
 
 class TransposeConv2d(Module): # TODO
     def __init__(self):
@@ -369,4 +372,4 @@ class Model():
 
         :returns a tensor of size (N1, C, H, W) with values in range 0-255
         '''
-        return self.model.forward(test_input).clamp(0., 255.) # TODO check correctness
+        return self.model.forward(test_input).mul(255)
