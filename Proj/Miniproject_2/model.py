@@ -181,9 +181,18 @@ class Conv2d(Module): # TODO
 
 
     def backward(self, d_out):
+        '''Conv2d backward pass
+        
+        :d_out: (tensor) Gradient w.r.t output
+
+        :returns: Propagated loss gradient
+        '''
         # Update bias gradient
         self.db += d_out.sum([0, 2, 3])
         # Update weight gradient
+        self.dW += NotImplementedError
+        # Propagate loss gradient
+        return NotImplementedError
 
 
     def param(self):
