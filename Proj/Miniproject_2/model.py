@@ -366,7 +366,7 @@ class Model():
         self.model = Sequential(
             Conv2d(stride=2),
             ReLU,
-            Conv2d(stide=2),
+            Conv2d(stride=2),
             ReLU,
             Upsampling,
             ReLU,
