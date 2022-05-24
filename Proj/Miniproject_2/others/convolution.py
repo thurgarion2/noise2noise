@@ -110,7 +110,16 @@ class TransposeConv2d(Module): # TODO
 
         :returns: 2D transposed convolution operator applied over input
         '''
-        pass
+  
+        h_in = input_.shape[2]
+        w_in = input_.shape[3]
+        h_out = (h_in-1)*self.stride+self.dilation*(self.kernel_size[0]-1)+1
+        w_out = (w_in-1)*self.stride+self.dilation*(self.kernel_size[1]-1)+1
+        
+        input_ = input_.view(*input_.shape[:2],-1)
+       
+        out_folded = self.W.view(self.W.size(0),-1).T@input_
+        return fold(out_folded, output_size=(h_out,w_out), kernel_size=self.kernel_size, stride=self.stride)
 
     def backward(self, d_out):
         '''TransposeConv2d backward pass
