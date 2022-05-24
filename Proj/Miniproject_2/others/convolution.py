@@ -56,6 +56,8 @@ class Conv2d(Module):
             math.floor((input_.shape[2] - self.kernel_size[0])/self.stride) + 1, # H_out
             math.floor((input_.shape[3] - self.kernel_size[1])/self.stride)+ 1   # W_out
         )
+    def __call__(self, input_):
+        return self.forward(input_)
 
 
     def backward(self, d_out):

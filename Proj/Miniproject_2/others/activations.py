@@ -1,6 +1,6 @@
 import torch
 
-from module import Module
+from others.module import Module
 
 class ReLU(Module):
     '''ReLU activation'''
