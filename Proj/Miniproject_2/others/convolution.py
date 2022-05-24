@@ -74,11 +74,11 @@ class Conv2d(Module):
 
         # Update weight gradient        
         dW = d_out @ self.input_.transpose(-1,-2)
+        dW = dW.sum(0) # sum over batch samples
         self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
 
         # Propagate loss gradient
         out_ = self.weight.view(self.out_channels, -1).T@d_out
-        print(out_)
         return fold(out_,output_size=self.input_shape, kernel_size=self.kernel_size, stride=self.stride)
 
     def param(self):
