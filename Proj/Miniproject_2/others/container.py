@@ -1,6 +1,6 @@
 import torch
 
-from module import Module
+from .module import Module
 
 class Sequential(Module):
     ''' Container like torch.nn.Sequential to put together an

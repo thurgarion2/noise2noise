@@ -3,7 +3,7 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
-from others.module import Module
+from .module import Module
 
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
@@ -29,12 +29,12 @@ class Conv2d(Module):
         # Initialize weights & bias
         sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
 
-        self.W = empty((out_channels, in_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
-        self.b = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
+        self.weight = empty((out_channels, in_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.bias = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
 
         # Initialize weights & bias gradients
-        self.dW = self.W.new_zeros(self.W.size())
-        self.db = self.b.new_zeros(self.b.size())
+        self.dW = self.weight.new_zeros(self.weight.size())
+        self.db = self.bias.new_zeros(self.bias.size())
 
     def forward(self, input_):
         '''Conv2d forward pass
@@ -49,12 +49,12 @@ class Conv2d(Module):
         input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
        
         self.input_ = input_unfolded.clone()
-        input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, -1, 1)
+        input_convolved = self.weight.view(self.out_channels, -1) @ input_unfolded + self.bias.view(1, -1, 1)
         return input_convolved.view(
             -1, # |B|
             self.out_channels, # C_out
             math.floor((input_.shape[2] - self.kernel_size[0])/self.stride) + 1, # H_out
-            math.floor((input_.shape[3] - self.kernel_size[1])/self.stride)+ 1   # W_out
+            math.floor((input_.shape[3] - self.kernel_size[1])/self.stride) + 1  # W_out
         )
     def __call__(self, input_):
         return self.forward(input_)
@@ -70,19 +70,20 @@ class Conv2d(Module):
         d_out = d_out.view(d_out.size(0),self.out_channels,-1)
      
         # Update bias gradient
-    
         self.db += d_out.sum([0, 2])
-        # Update weight gradient
-        
-        dW = d_out@self.input_.transpose(-1,-2)
+
+        # Update weight gradient        
+        dW = d_out @ self.input_.transpose(-1,-2)
+        dW = dW.sum(0) # sum over batch samples
         self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
+
         # Propagate loss gradient
-        out_ = self.W.view(self.out_channels, -1).T@d_out
+        out_ = self.weight.view(self.out_channels, -1).T@d_out
         return fold(out_,output_size=self.input_shape, kernel_size=self.kernel_size, stride=self.stride)
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
-        return [(self.W, self.dW), (self.b, self.db)]
+        return [(self.weight, self.dW), (self.bias, self.db)]
 
 class TransposeConv2d(Module): # TODO
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1):
@@ -96,12 +97,12 @@ class TransposeConv2d(Module): # TODO
         # Initialize weights & bias
         sqrt_k = 1 / (out_channels * kernel_size[0] * kernel_size[1]) ** 0.5
 
-        self.W = empty((in_channels, out_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
-        self.b = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
+        self.weight = empty((in_channels, out_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.bias = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
 
         # Initialize weights & bias gradients
-        self.dW = self.W.new_zeros(self.W.size())
-        self.db = self.b.new_zeros(self.b.size())
+        self.dW = self.weight.new_zeros(self.weight.size())
+        self.db = self.bias.new_zeros(self.bias.size())
 
     def forward(self, input_):
         '''TransposeConv2d forward pass
@@ -132,7 +133,7 @@ class TransposeConv2d(Module): # TODO
 
     def param(self):
         '''Return TransposeConv2d weight and bias parameters'''
-        return [(self.W, self.dW), (self.b, self.db)]
+        return [(self.weight, self.dW), (self.bias, self.db)]
 
 class Upsampling(Module): # TODO (underlying is transposeConv2d)
     '''Upsampling module'''
