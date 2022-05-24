@@ -3,7 +3,7 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
-from .module import Module
+from others.module import Module
 
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
@@ -111,16 +111,18 @@ class TransposeConv2d(Module): # TODO
 
         :returns: 2D transposed convolution operator applied over input
         '''
-  
+        self.input_shape = input_.shape
         h_in = input_.shape[2]
         w_in = input_.shape[3]
         h_out = (h_in-1)*self.stride+self.dilation*(self.kernel_size[0]-1)+1
         w_out = (w_in-1)*self.stride+self.dilation*(self.kernel_size[1]-1)+1
         
         input_ = input_.view(*input_.shape[:2],-1)
+        self.input_ = input_.clone()
        
-        out_folded = self.W.view(self.W.size(0),-1).T@input_
-        return fold(out_folded, output_size=(h_out,w_out), kernel_size=self.kernel_size, stride=self.stride)
+        out_folded = (self.weight.view(self.weight.size(0),-1).T)@input_
+        
+        return fold(out_folded, output_size=(h_out,w_out), kernel_size=self.kernel_size, stride=self.stride)+self.bias.view(-1,1,1)
 
     def backward(self, d_out):
         '''TransposeConv2d backward pass
@@ -129,7 +131,13 @@ class TransposeConv2d(Module): # TODO
 
         :returns: Loss gradient to propagate
         '''
-        pass
+        self.db += d_out.sum([0, 2, 3])
+       
+        d_out_unfold = unfold(d_out, kernel_size=self.kernel_size, stride=self.stride)
+        
+        self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
+        return (self.weight.view(self.in_channels,-1)@d_out_unfold).view(self.input_shape)
+        
 
     def param(self):
         '''Return TransposeConv2d weight and bias parameters'''
