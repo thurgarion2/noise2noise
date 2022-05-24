@@ -2,12 +2,11 @@ import torch
 from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 
-from others.container import Sequential
-from others.optimizer import SGD
-from others.loss import MSE
-from others.convolution import Conv2d, Upsampling
-from others.linear import Linear
-from others.activations import ReLU, Sigmoid
+from .others.container import Sequential
+from .others.optimizer import SGD
+from .others.loss import MSE
+from .others.convolution import Conv2d, Upsampling
+from .others.activations import ReLU, Sigmoid
 
 from pathlib import Path
 

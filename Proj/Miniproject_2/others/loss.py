@@ -1,6 +1,6 @@
 import torch
 
-from module import Module
+from .module import Module
 
 class MSE(Module):
     '''Mean squared error loss'''
