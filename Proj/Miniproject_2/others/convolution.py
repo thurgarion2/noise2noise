@@ -3,7 +3,7 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
-from module import Module
+from others.module import Module
 
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
@@ -24,6 +24,7 @@ class Conv2d(Module):
         self.out_channels = out_channels
         self.kernel_size = kernel_size
         self.stride = stride
+        
 
         # Initialize weights & bias
         sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
@@ -43,9 +44,11 @@ class Conv2d(Module):
         :returns: 2D convolution applied on input signal, with size (N, C_out, H_out, W_out)
         '''
         # Clone the input for the gradients
-        self.input_ = input_.clone()
 
+        self.input_shape = input_.shape[2:]
         input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
+       
+        self.input_ = input_unfolded.clone()
         input_convolved = self.W.view(self.out_channels, -1) @ input_unfolded + self.b.view(1, -1, 1)
         return input_convolved.view(
             -1, # |B|
@@ -62,13 +65,18 @@ class Conv2d(Module):
 
         :returns: Propagated loss gradient
         '''
+        d_out = d_out.view(d_out.size(0),self.out_channels,-1)
+     
         # Update bias gradient
-        self.db += d_out.sum([0, 2, 3])
+    
+        self.db += d_out.sum([0, 2])
         # Update weight gradient
-        self.dW += NotImplementedError
+        
+        dW = d_out@self.input_.transpose(-1,-2)
+        self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
         # Propagate loss gradient
-        return NotImplementedError
-
+        out_ = self.W.view(self.out_channels, -1).T@d_out
+        return fold(out_,output_size=self.input_shape, kernel_size=self.kernel_size, stride=self.stride)
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
