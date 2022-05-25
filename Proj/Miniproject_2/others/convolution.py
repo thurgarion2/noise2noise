@@ -3,7 +3,7 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
-from others.module import Module
+from .module import Module
 
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
@@ -85,7 +85,7 @@ class Conv2d(Module):
         '''Return Conv2d weight and bias parameters'''
         return [(self.weight, self.dW), (self.bias, self.db)]
 
-class TransposeConv2d(Module): # TODO
+class TransposeConv2d(Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1):
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -138,13 +138,35 @@ class TransposeConv2d(Module): # TODO
         self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
         return (self.weight.view(self.in_channels,-1)@d_out_unfold).view(self.input_shape)
         
-
     def param(self):
         '''Return TransposeConv2d weight and bias parameters'''
         return [(self.weight, self.dW), (self.bias, self.db)]
 
-class Upsampling(Module): # TODO (underlying is transposeConv2d)
-    '''Upsampling module'''
-    def __init__(self):
+
+class Upsampling(Module):
+    '''Upsampling module (underlying is TransposeConv2d)'''
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1):        
         '''Upsampling constructor'''
-        pass
+        self.transposedConv2d = TransposeConv2d(in_channels, out_channels, kernel_size, stride, padding, dilation)
+
+    def forward(self, input_):
+        '''Upsampling forward pass
+        
+        :input_: (tensor) input tensor
+
+        :returns: 2D transposed convolution operator applied over input
+        '''
+        return self.transposedConv2d.forward(input_)
+    
+    def backward(self, d_out):
+        '''Upsampling backward pass
+        
+        :d_out: (tensor) Gradient w.r.t. output (backpropagated gradient from next layers)
+
+        :returns: Loss gradient to propagate
+        '''
+        return self.transposedConv2d.backward(d_out)
+
+    def param(self):
+        '''Return Upsampling weight and bias parameters'''
+        return self.transposedConv2d.param()
