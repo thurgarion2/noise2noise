@@ -29,7 +29,7 @@ class SGD:
         
         # Add momentum
         if (self.momentum != 0):
-            if (~self.velocity):
+            if (not self.velocity):
                 for _, g in self.params:
                     self.velocity.append(g) 
             else:
