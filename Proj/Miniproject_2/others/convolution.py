@@ -3,9 +3,11 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
+
+
 from .module import Module
 
-def parmas2d(param):
+def params2d(param):
 	return (param, param) if isinstance(param, int) else param
 
 class Conv2d(Module):
@@ -25,10 +27,10 @@ class Conv2d(Module):
         '''
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = parmas2d(kernel_size)
-        self.stride = parmas2d(stride)
-        self.padding = parmas2d(padding)
-        self.dilation = parmas2d(dilation)
+        self.kernel_size = params2d(kernel_size)
+        self.stride = params2d(stride)
+        self.padding = params2d(padding)
+        self.dilation = params2d(dilation)
 
         # Initialize weights & bias
         sqrt_k = 1 / (in_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5
@@ -85,8 +87,9 @@ class Conv2d(Module):
         # Update weight gradient        
         dW = d_out @ self.input_.transpose(-1,-2)
         dW = dW.sum(0) # sum over batch samples
+        
         self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
-
+        
         # Propagate loss gradient
         out_ = self.weight.view(self.out_channels, -1).T @ d_out
 
@@ -101,16 +104,17 @@ class Conv2d(Module):
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
+      
         return [(self.weight, self.dW), (self.bias, self.db)]
 
 class TransposeConv2d(Module):
     def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = parmas2d(kernel_size)
-        self.stride = parmas2d(stride)
-        self.padding = parmas2d(padding)
-        self.dilation = parmas2d(dilation)
+        self.kernel_size = params2d(kernel_size)
+        self.stride = params2d(stride)
+        self.padding = params2d(padding)
+        self.dilation = params2d(dilation)
 
         # Initialize weights & bias
         sqrt_k = 1 / (out_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5

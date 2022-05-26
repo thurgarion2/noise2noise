@@ -25,7 +25,7 @@ class MSE(Module):
         
         :returns: MSE gradient
         '''
-        return self.error.mean().mul(-2)
+        return self.error.mean(0).mul(-2)
 
     def param(self):
         '''MSE is a parameterless module'''

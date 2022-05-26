@@ -41,4 +41,6 @@ class SGD:
 
         # Update parameters
         for p, g in self.params:
-            p -= self.lr * g
+          
+            p.data -= self.lr * g
+            
