@@ -7,7 +7,7 @@ from .module import Module
 
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
-    def __init__(self, in_channels=3, out_channels=3, kernel_size=(2, 2), stride=1):
+    def __init__(self, in_channels=3, out_channels=3, kernel_size=(2, 2), stride=1, padding=0, dilation=1):
         '''Conv2d module constructor
         
         :in_channels: (int) Number of channels in the input image, default = 3
@@ -24,7 +24,8 @@ class Conv2d(Module):
         self.out_channels = out_channels
         self.kernel_size = kernel_size
         self.stride = stride
-        
+        self.padding = padding
+        self.dilation = dilation
 
         # Initialize weights & bias
         sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
@@ -46,15 +47,21 @@ class Conv2d(Module):
         # Clone the input for the gradients
 
         self.input_shape = input_.shape[2:]
-        input_unfolded = unfold(input_, kernel_size=self.kernel_size, stride=self.stride)
+        input_unfolded = unfold(
+            input_, 
+            kernel_size=self.kernel_size, 
+            stride=self.stride, 
+            padding=self.padding,
+            dilation=self.dilation
+        )
        
         self.input_ = input_unfolded.clone()
         input_convolved = self.weight.view(self.out_channels, -1) @ input_unfolded + self.bias.view(1, -1, 1)
         return input_convolved.view(
             -1, # |B|
             self.out_channels, # C_out
-            math.floor((input_.shape[2] - self.kernel_size[0])/self.stride) + 1, # H_out
-            math.floor((input_.shape[3] - self.kernel_size[1])/self.stride) + 1  # W_out
+            math.floor((input_.shape[2] + 2*self.padding - self.dilation*(self.kernel_size[0]-1) +1)/self.stride) + 1, # H_out
+            math.floor((input_.shape[3] + 2*self.padding - self.dilation*(self.kernel_size[1]-1) +1)/self.stride) + 1  # W_out
         )
     def __call__(self, input_):
         return self.forward(input_)
@@ -79,7 +86,15 @@ class Conv2d(Module):
 
         # Propagate loss gradient
         out_ = self.weight.view(self.out_channels, -1).T@d_out
-        return fold(out_,output_size=self.input_shape, kernel_size=self.kernel_size, stride=self.stride)
+
+        return fold(
+            out_,
+            output_size=self.input_shape, 
+            kernel_size=self.kernel_size, 
+            stride=self.stride, 
+            padding=self.padding,
+            dilation=self.dilation
+        )
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
@@ -91,8 +106,8 @@ class TransposeConv2d(Module):
         self.out_channels = out_channels
         self.kernel_size = kernel_size
         self.stride = stride
-        self.padding=0
-        self.dilation=1
+        self.padding=padding
+        self.dilation=dilation
 
         # Initialize weights & bias
         sqrt_k = 1 / (out_channels * kernel_size[0] * kernel_size[1]) ** 0.5
@@ -114,15 +129,22 @@ class TransposeConv2d(Module):
         self.input_shape = input_.shape
         h_in = input_.shape[2]
         w_in = input_.shape[3]
-        h_out = (h_in-1)*self.stride+self.dilation*(self.kernel_size[0]-1)+1
-        w_out = (w_in-1)*self.stride+self.dilation*(self.kernel_size[1]-1)+1
+        h_out = (h_in-1)*self.stride - 2*self.padding + self.dilation*(self.kernel_size[0]-1) + 1
+        w_out = (w_in-1)*self.stride - 2*self.padding + self.dilation*(self.kernel_size[1]-1) + 1
         
         input_ = input_.view(*input_.shape[:2],-1)
         self.input_ = input_.clone()
        
         out_folded = (self.weight.view(self.weight.size(0),-1).T)@input_
         
-        return fold(out_folded, output_size=(h_out,w_out), kernel_size=self.kernel_size, stride=self.stride)+self.bias.view(-1,1,1)
+        return fold(
+            out_folded, 
+            output_size=(h_out,w_out), 
+            kernel_size=self.kernel_size, 
+            stride=self.stride, 
+            padding=self.padding,
+            dilation=self.dilation
+        ) + self.bias.view(-1,1,1)
 
     def backward(self, d_out):
         '''TransposeConv2d backward pass
@@ -133,7 +155,13 @@ class TransposeConv2d(Module):
         '''
         self.db += d_out.sum([0, 2, 3])
        
-        d_out_unfold = unfold(d_out, kernel_size=self.kernel_size, stride=self.stride)
+        d_out_unfold = unfold(
+            d_out, 
+            kernel_size=self.kernel_size, 
+            stride=self.stride, 
+            padding=self.padding, 
+            dilation=self.dilation
+        )
         
         self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
         return (self.weight.view(self.in_channels,-1)@d_out_unfold).view(self.input_shape)
