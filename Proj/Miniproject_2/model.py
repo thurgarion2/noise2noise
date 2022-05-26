@@ -25,9 +25,9 @@ class Model():
             ReLU(),
             Conv2d(10, 20, (3,3), stride=2, padding=1), # 20, 8, 8
             ReLU(),
-            Upsampling(20, 10, (3,3), stride=2, padding=1), # 10, 16, 16 
+            Upsampling(20, 10, (4,4), stride=2, padding=1), # 10, 16, 16 
             ReLU(),
-            Upsampling(10, 3, (3,3), stride=2, padding=1), # 3, 32, 32
+            Upsampling(10, 3, (4,4), stride=2, padding=1), # 3, 32, 32
             Sigmoid()
         )
         # Instantiate optimizer

@@ -60,8 +60,8 @@ class Conv2d(Module):
         return input_convolved.view(
             -1, # |B|
             self.out_channels, # C_out
-            math.floor((input_.shape[2] + 2*self.padding - self.dilation*(self.kernel_size[0]-1) +1)/self.stride) + 1, # H_out
-            math.floor((input_.shape[3] + 2*self.padding - self.dilation*(self.kernel_size[1]-1) +1)/self.stride) + 1  # W_out
+            math.floor((input_.shape[2] + 2*self.padding - self.dilation*(self.kernel_size[0]-1) -1)/self.stride) + 1, # H_out
+            math.floor((input_.shape[3] + 2*self.padding - self.dilation*(self.kernel_size[1]-1) -1)/self.stride) + 1  # W_out
         )
     def __call__(self, input_):
         return self.forward(input_)
@@ -101,7 +101,7 @@ class Conv2d(Module):
         return [(self.weight, self.dW), (self.bias, self.db)]
 
 class TransposeConv2d(Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1):
+    def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.kernel_size = kernel_size
@@ -173,7 +173,7 @@ class TransposeConv2d(Module):
 
 class Upsampling(Module):
     '''Upsampling module (underlying is TransposeConv2d)'''
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1):        
+    def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):        
         '''Upsampling constructor'''
         self.transposedConv2d = TransposeConv2d(in_channels, out_channels, kernel_size, stride, padding, dilation)
 
