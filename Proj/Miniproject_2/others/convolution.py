@@ -5,6 +5,9 @@ import math
 
 from .module import Module
 
+def parmas2d(param):
+	return (param, param) if isinstance(param, int) else param
+
 class Conv2d(Module):
     '''Conv2d module implemented by a linear function'''
     def __init__(self, in_channels=3, out_channels=3, kernel_size=(2, 2), stride=1, padding=0, dilation=1):
@@ -22,15 +25,15 @@ class Conv2d(Module):
         '''
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = kernel_size
-        self.stride = stride
-        self.padding = padding
-        self.dilation = dilation
+        self.kernel_size = parmas2d(kernel_size)
+        self.stride = parmas2d(stride)
+        self.padding = parmas2d(padding)
+        self.dilation = parmas2d(dilation)
 
         # Initialize weights & bias
-        sqrt_k = 1 / (in_channels * kernel_size[0] * kernel_size[1]) ** 0.5
+        sqrt_k = 1 / (in_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5
 
-        self.weight = empty((out_channels, in_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.weight = empty((out_channels, in_channels, self.kernel_size[0], self.kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
         self.bias = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
 
         # Initialize weights & bias gradients
@@ -60,8 +63,8 @@ class Conv2d(Module):
         return input_convolved.view(
             -1, # |B|
             self.out_channels, # C_out
-            math.floor((input_.shape[2] + 2*self.padding - self.dilation*(self.kernel_size[0]-1) -1)/self.stride) + 1, # H_out
-            math.floor((input_.shape[3] + 2*self.padding - self.dilation*(self.kernel_size[1]-1) -1)/self.stride) + 1  # W_out
+            math.floor((input_.shape[2] + 2*self.padding[0] - self.dilation[0]*(self.kernel_size[0]-1) -1)/self.stride[0]) + 1, # H_out
+            math.floor((input_.shape[3] + 2*self.padding[1] - self.dilation[1]*(self.kernel_size[1]-1) -1)/self.stride[1]) + 1  # W_out
         )
     def __call__(self, input_):
         return self.forward(input_)
@@ -104,15 +107,15 @@ class TransposeConv2d(Module):
     def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = kernel_size
-        self.stride = stride
-        self.padding=padding
-        self.dilation=dilation
+        self.kernel_size = parmas2d(kernel_size)
+        self.stride = parmas2d(stride)
+        self.padding = parmas2d(padding)
+        self.dilation = parmas2d(dilation)
 
         # Initialize weights & bias
-        sqrt_k = 1 / (out_channels * kernel_size[0] * kernel_size[1]) ** 0.5
+        sqrt_k = 1 / (out_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5
 
-        self.weight = empty((in_channels, out_channels, kernel_size[0], kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
+        self.weight = empty((in_channels, out_channels, self.kernel_size[0], self.kernel_size[1])).uniform_(-sqrt_k, sqrt_k)
         self.bias = empty((out_channels)).uniform_(-sqrt_k, sqrt_k)
 
         # Initialize weights & bias gradients
@@ -129,8 +132,8 @@ class TransposeConv2d(Module):
         self.input_shape = input_.shape
         h_in = input_.shape[2]
         w_in = input_.shape[3]
-        h_out = (h_in-1)*self.stride - 2*self.padding + self.dilation*(self.kernel_size[0]-1) + 1
-        w_out = (w_in-1)*self.stride - 2*self.padding + self.dilation*(self.kernel_size[1]-1) + 1
+        h_out = (h_in-1)*self.stride[0] - 2*self.padding[0] + self.dilation[0]*(self.kernel_size[0]-1) + 1
+        w_out = (w_in-1)*self.stride[1] - 2*self.padding[1] + self.dilation[1]*(self.kernel_size[1]-1) + 1
         
         input_ = input_.view(*input_.shape[:2],-1)
         self.input_ = input_.clone()
