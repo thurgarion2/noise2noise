@@ -74,7 +74,7 @@ class Conv2d(Module):
 
         :returns: Propagated loss gradient
         '''
-        d_out = d_out.view(d_out.size(0),self.out_channels,-1)
+        d_out = d_out.view(d_out.size(0), self.out_channels, -1)
      
         # Update bias gradient
         self.db += d_out.sum([0, 2])
@@ -85,7 +85,7 @@ class Conv2d(Module):
         self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
 
         # Propagate loss gradient
-        out_ = self.weight.view(self.out_channels, -1).T@d_out
+        out_ = self.weight.view(self.out_channels, -1).T @ d_out
 
         return fold(
             out_,
@@ -135,7 +135,7 @@ class TransposeConv2d(Module):
         input_ = input_.view(*input_.shape[:2],-1)
         self.input_ = input_.clone()
        
-        out_folded = (self.weight.view(self.weight.size(0),-1).T)@input_
+        out_folded = (self.weight.view(self.weight.size(0),-1).T) @ input_
         
         return fold(
             out_folded, 
@@ -163,8 +163,8 @@ class TransposeConv2d(Module):
             dilation=self.dilation
         )
         
-        self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
-        return (self.weight.view(self.in_channels,-1)@d_out_unfold).view(self.input_shape)
+        self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).sum(0).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
+        return (self.weight.view(self.in_channels,-1) @ d_out_unfold).view(self.input_shape)
         
     def param(self):
         '''Return TransposeConv2d weight and bias parameters'''
