@@ -40,7 +40,6 @@ class Sequential(Module):
         x = d_out.clone()
         # Sequentially go through underlying modules in reverse order
         for mod in self.modules[::-1]:
-            print(mod)
             # Propagate gradient from next layer to previous layer
             x = mod.backward(x)
           
