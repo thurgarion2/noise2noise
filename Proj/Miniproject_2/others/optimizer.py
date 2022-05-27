@@ -23,6 +23,7 @@ class SGD:
         '''Performs single optimization step'''
 
         # Add weight decay
+        ### bizarre
         if (self.weight_decay != 0):
             for p, g in self.params:
                 g = g + self.weight_decay * p

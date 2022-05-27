@@ -40,6 +40,7 @@ class Sequential(Module):
         x = d_out.clone()
         # Sequentially go through underlying modules in reverse order
         for mod in self.modules[::-1]:
+            print(mod)
             # Propagate gradient from next layer to previous layer
             x = mod.backward(x)
 
@@ -52,11 +53,5 @@ class Sequential(Module):
         
         :returns: list of pairs (parameter, gradient) of tensors of the same size
         '''
-        # Initialize empty parameter list
-        param_list = []
-        # Retrieve from each underlying module
-        for mod in self.modules:
-            for p in mod.param():
-                param_list.append(p)
         
-        return param_list
+        return [p for mod in self.modules for p in mod.param()]
