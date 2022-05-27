@@ -21,17 +21,17 @@ class Model():
         '''Instantiate model + optimizer + loss function + any other stuff needed'''
         # Instantiate model
         self.model = Sequential(
-            Conv2d(3, 10, (3,3), stride=2, padding=1), # 10, 16, 16
+            Conv2d(3, 64, (3,3), stride=2, padding=1), # 10, 15, 15
             ReLU(),
-            Conv2d(10, 20, (3,3), stride=2, padding=1), # 20, 8, 8
+            Conv2d(64, 64, (3,3), stride=2, padding=1), # 20, 7, 7
             ReLU(),
-            Upsampling(20, 10, (4,4), stride=2, padding=1), # 10, 16, 16 
+            Upsampling(64, 64, (4,4), stride=2, padding=1), # 10, 15, 15 
             ReLU(),
-            Upsampling(10, 3, (4,4), stride=2, padding=1), # 3, 32, 32
+            Upsampling(64, 3, (4,4), stride=2, padding=1), # 3, 32, 32
             Sigmoid()
         )
         # Instantiate optimizer
-        self.optimizer = SGD(self.model.param())
+        self.optimizer = SGD(self.model.param(), learning_rate=1e-4)
 
         # Choose loss function
         self.criterion = MSE()
@@ -72,9 +72,10 @@ class Model():
                 self.optimizer.step()
 
             if verbose:
-                print(f'Epoch #{e+1}: MSE Loss = {epoch_loss:.6f}')
-            # Save
-            torch.save(self.model, self.model_path)
+                print(f'Epoch #{e+1}: MSE Loss = {epoch_loss/(train_input.shape[0]/self.batch_size):.6f}')
+
+        # Save at the end of the training
+        torch.save(self.model, self.model_path)
 
 
     def predict(self, test_input) -> torch.Tensor:

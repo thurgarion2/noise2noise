@@ -3,9 +3,11 @@ from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 import math
 
+
+
 from .module import Module
 
-def parmas2d(param):
+def params2d(param):
 	return (param, param) if isinstance(param, int) else param
 
 class Conv2d(Module):
@@ -25,10 +27,10 @@ class Conv2d(Module):
         '''
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = parmas2d(kernel_size)
-        self.stride = parmas2d(stride)
-        self.padding = parmas2d(padding)
-        self.dilation = parmas2d(dilation)
+        self.kernel_size = params2d(kernel_size)
+        self.stride = params2d(stride)
+        self.padding = params2d(padding)
+        self.dilation = params2d(dilation)
 
         # Initialize weights & bias
         sqrt_k = 1 / (in_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5
@@ -77,7 +79,7 @@ class Conv2d(Module):
 
         :returns: Propagated loss gradient
         '''
-        d_out = d_out.view(d_out.size(0),self.out_channels,-1)
+        d_out = d_out.view(d_out.size(0), self.out_channels, -1)
      
         # Update bias gradient
         self.db += d_out.sum([0, 2])
@@ -85,10 +87,11 @@ class Conv2d(Module):
         # Update weight gradient        
         dW = d_out @ self.input_.transpose(-1,-2)
         dW = dW.sum(0) # sum over batch samples
+        
         self.dW += dW.view(self.out_channels, self.in_channels, self.kernel_size[0], self.kernel_size[1])
-
+        
         # Propagate loss gradient
-        out_ = self.weight.view(self.out_channels, -1).T@d_out
+        out_ = self.weight.view(self.out_channels, -1).T @ d_out
 
         return fold(
             out_,
@@ -101,16 +104,17 @@ class Conv2d(Module):
 
     def param(self):
         '''Return Conv2d weight and bias parameters'''
+      
         return [(self.weight, self.dW), (self.bias, self.db)]
 
 class TransposeConv2d(Module):
     def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.kernel_size = parmas2d(kernel_size)
-        self.stride = parmas2d(stride)
-        self.padding = parmas2d(padding)
-        self.dilation = parmas2d(dilation)
+        self.kernel_size = params2d(kernel_size)
+        self.stride = params2d(stride)
+        self.padding = params2d(padding)
+        self.dilation = params2d(dilation)
 
         # Initialize weights & bias
         sqrt_k = 1 / (out_channels * self.kernel_size[0] * self.kernel_size[1]) ** 0.5
@@ -138,7 +142,7 @@ class TransposeConv2d(Module):
         input_ = input_.view(*input_.shape[:2],-1)
         self.input_ = input_.clone()
        
-        out_folded = (self.weight.view(self.weight.size(0),-1).T)@input_
+        out_folded = (self.weight.view(self.weight.size(0),-1).T) @ input_
         
         return fold(
             out_folded, 
@@ -166,8 +170,8 @@ class TransposeConv2d(Module):
             dilation=self.dilation
         )
         
-        self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
-        return (self.weight.view(self.in_channels,-1)@d_out_unfold).view(self.input_shape)
+        self.dW += (d_out_unfold@self.input_.transpose(-1,-2)).sum(0).view((self.in_channels, self.out_channels, self.kernel_size[0], self.kernel_size[1]))
+        return (self.weight.view(self.in_channels,-1) @ d_out_unfold).view(self.input_shape)
         
     def param(self):
         '''Return TransposeConv2d weight and bias parameters'''

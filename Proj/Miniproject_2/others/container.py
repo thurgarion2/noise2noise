@@ -43,6 +43,7 @@ class Sequential(Module):
             print(mod)
             # Propagate gradient from next layer to previous layer
             x = mod.backward(x)
+          
 
         # Return gradient propagated through underlying modules    
         return x
