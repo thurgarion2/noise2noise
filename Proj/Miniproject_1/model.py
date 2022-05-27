@@ -2,16 +2,16 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from .others.architectures import UnetWithSigmoid
+from .others.architectures import UnetWithConcat
 from torchvision import transforms
-from .others.training import ToFloatImage
+from .others.training_pytorch import ToFloatImage
 from pathlib import Path
 
 class Model():
     def __init__( self ) -> None :
         ## instantiate model + optimizer + loss function + any other stuff you need
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        self.model = UnetWithSigmoid().to(self.device)
+        self.model = UnetWithConcat().to(self.device)
         
         self.batch_size = 128
         self.criterion = nn.MSELoss()
@@ -39,7 +39,7 @@ class Model():
         :num_epochs: (int) number of training epochs, default  = 1
         '''
         with torch.set_grad_enabled(True):
-            i = 0
+            self.model.to(self.device)
             for e in range(num_epochs):
                 for inputs, targets in zip(train_input.split(self.batch_size), 
                                        train_target.split(self.batch_size)):
@@ -60,6 +60,7 @@ class Model():
         # : test ̇input : tensor of size ( N1 , C , H , W ) with values in range 0 - 255 that has to be denoised by the trained or the loaded network .
         # : returns a tensor of the size ( N1 , C , H , W ) with values in range 0 - 255.
         with torch.inference_mode():
+            self.model.to("cpu")
             test_input = self.inputs_transforms(test_input)
             
             ##model return values in range 0-1, simpler to compute psnr and we can use sigmoid

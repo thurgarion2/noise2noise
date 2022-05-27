@@ -6,13 +6,13 @@ index = {"ResNetBlock": "00_architecture_to_test.ipynb",
          "ConvNet": "00_architecture_to_test.ipynb",
          "ResNet": "00_architecture_to_test.ipynb",
          "Unet": "00_architecture_to_test.ipynb",
-         "UnetWithSigmoid": "00_architecture_to_test.ipynb",
+         "UnetWithConcat": "00_architecture_to_test.ipynb",
          "load_images": "00_helpers.ipynb",
-         "to_float_image": "00_helpers.ipynb",
+         "to_float_image": "00_training_pytorch.ipynb",
          "to_rgb_image": "00_helpers.ipynb",
          "show_img": "00_helpers.ipynb",
          "psnr": "00_helpers.ipynb",
-         "ToFloatImage": "00_training.ipynb",
+         "ToFloatImage": "00_training_pytorch.ipynb",
          "Noise2NoiseDataset": "00_training.ipynb",
          "psnr_metric": "00_training.ipynb",
          "train": "00_training.ipynb",
@@ -28,7 +28,8 @@ index = {"ResNetBlock": "00_architecture_to_test.ipynb",
 
 modules = ["architectures.py",
            "helpers.py",
-           "training.py"]
+           "training.py",
+           "training_pytorch.py"]
 
 doc_url = "https://thurgarion2.github.io/noise2noise/"
 

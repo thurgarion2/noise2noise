@@ -3,6 +3,7 @@
     "Overview": "/",
     "Architectures": "architecture_to_test.html",
     "Helpers": "helpers.html",
-    "Training": "training.html"
+    "Training": "training.html",
+    "trainin pytorch": "training_pytorch.html"
   }
 }

@@ -18,6 +18,9 @@ entries:
     - output: web,pdf
       title: Training
       url: training.html
+    - output: web,pdf
+      title: trainin pytorch
+      url: training_pytorch.html
     output: web
     title: noise2noise
   output: web
