@@ -63,6 +63,6 @@ class Model():
             self.model.to("cpu")
             test_input = self.inputs_transforms(test_input)
             
-            ##model return values in range 0-1, simpler to compute psnr and we can use sigmoid
+            ##model return values in range 0-1, simpler to compute psnr and we can use sigmoid without change
             return self.model(test_input)*255
     
