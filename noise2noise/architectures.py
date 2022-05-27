@@ -15,7 +15,6 @@ class ResNetBlock(nn.Module):
         super().__init__()
         self.layers = nn.Sequential(
             nn.Conv2d(channels, channels, kernel_size=(3, 3), padding=(1, 1), bias=False),
-            nn.BatchNorm2d(channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(channels, channels, kernel_size=(3, 3), padding=(1, 1), bias=False),
             nn.BatchNorm2d(channels))
