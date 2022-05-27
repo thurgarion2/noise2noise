@@ -28,6 +28,10 @@ class Sequential(Module):
 
         # Return the output from the last underlying module
         return x
+    
+    def to(self,device):
+        for m in self.modules:
+            modules.to(device)
 
     def backward(self, d_out: torch.Tensor):
         '''Sequential backward pass
@@ -40,7 +44,6 @@ class Sequential(Module):
         x = d_out.clone()
         # Sequentially go through underlying modules in reverse order
         for mod in self.modules[::-1]:
-            print(mod)
             # Propagate gradient from next layer to previous layer
             x = mod.backward(x)
           

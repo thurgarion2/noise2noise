@@ -5,6 +5,11 @@ class Module(object):
     def forward(self, *input):
         '''Should get for input and returns, a tensor or a tuple of tensors.'''
         raise NotImplementedError
+    def to(self, device):
+        '''pass a module to the wished device'''
+        pass
+    def __call__(self, *input):
+        return self.forward(*input)
     def backward(self, *gradwrtoutput):
         '''Should get as input a tensor or a tuple of tensors containing the gradient 
         of the loss with respect to the module's output, accumulate the gradient w.r.t.

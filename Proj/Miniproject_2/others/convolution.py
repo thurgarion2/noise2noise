@@ -68,6 +68,12 @@ class Conv2d(Module):
             math.floor((input_.shape[2] + 2*self.padding[0] - self.dilation[0]*(self.kernel_size[0]-1) -1)/self.stride[0]) + 1, # H_out
             math.floor((input_.shape[3] + 2*self.padding[1] - self.dilation[1]*(self.kernel_size[1]-1) -1)/self.stride[1]) + 1  # W_out
         )
+    def to(self, device):
+        self.weight =  self.weight.to(device)
+        self.bias =  self.bias.to(device)
+        self.dW = self.dW.to(device)
+        self.db = self.db.to(device)
+        
     def __call__(self, input_):
         return self.forward(input_)
 
@@ -152,6 +158,12 @@ class TransposeConv2d(Module):
             padding=self.padding,
             dilation=self.dilation
         ) + self.bias.view(-1,1,1)
+    
+    def to(self, device):
+        self.weight =  self.weight.to(device)
+        self.bias =  self.bias.to(device)
+        self.dW = self.dW.to(device)
+        self.db = self.db.to(device)
 
     def backward(self, d_out):
         '''TransposeConv2d backward pass
