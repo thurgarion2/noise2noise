@@ -62,11 +62,14 @@ class Conv2d(Module):
        
         self.input_ = input_unfolded.clone()
         input_convolved = self.weight.view(self.out_channels, -1) @ input_unfolded + self.bias.view(1, -1, 1)
+                                                                                                   
+        h_out = (input_.shape[2] + 2*self.padding[0] - self.dilation[0]*(self.kernel_size[0]-1) -1)//self.stride[0] + 1 
+        w_out = (input_.shape[3] + 2*self.padding[1] - self.dilation[1]*(self.kernel_size[1]-1) -1)//self.stride[1] + 1 
         return input_convolved.view(
             -1, # |B|
             self.out_channels, # C_out
-            math.floor((input_.shape[2] + 2*self.padding[0] - self.dilation[0]*(self.kernel_size[0]-1) -1)/self.stride[0]) + 1, # H_out
-            math.floor((input_.shape[3] + 2*self.padding[1] - self.dilation[1]*(self.kernel_size[1]-1) -1)/self.stride[1]) + 1  # W_out
+            h_out, # H_out
+            w_out # W_out
         )
     def to(self, device):
         self.weight =  self.weight.to(device)
