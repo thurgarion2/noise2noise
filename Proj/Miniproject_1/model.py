@@ -3,8 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from .others.architectures import UnetWithConcat
-from torchvision import transforms
-from .others.training_pytorch import ToFloatImage
+from .others.training_pytorch import ToFloatImage, ToNormalize, Compose
 from pathlib import Path
 
 class Model():
@@ -18,8 +17,8 @@ class Model():
         self.optimizer = optim.Adam(self.model.parameters(), lr=3e-4)
         
         mean, std = [0.4810, 0.4451, 0.3920], [0.2757, 0.2655, 0.2756]
-        self.inputs_transforms = transforms.Compose([ToFloatImage(), transforms.Normalize(mean =mean, std = std)])
-        self.targets_transforms = transforms.Compose([ToFloatImage()])
+        self.inputs_transforms = Compose([ToFloatImage(), ToNormalize(mean =mean, std = std)])
+        self.targets_transforms = Compose([ToFloatImage()])
 
     def load_pretrained_model(self) -> None :
         ## This loads the parameters saved in bestmodel . pth into the model

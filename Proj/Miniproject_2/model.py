@@ -22,21 +22,21 @@ class Model():
         '''Instantiate model + optimizer + loss function + any other stuff needed'''
         # Instantiate model
         self.model = Sequential(
-            Conv2d(3, 64, (4,4), stride=2, padding=2), # 10, 15, 15
+            Conv2d(3, 64, (4,4), stride=2, padding=2), 
             ReLU(),
-            Conv2d(64, 256, (4,4), stride=2, padding=2), # 20, 7, 7
+            Conv2d(64, 256, (4,4), stride=2, padding=2), 
             ReLU(),
-            Upsampling(256, 128, (5,5), stride=2, padding=2), # 10, 15, 15 
+            Upsampling(256, 128, (5,5), stride=2, padding=2),
             ReLU(),
-            Upsampling(128, 3, (4,4), stride=2, padding=2), # 3, 32, 32
+            Upsampling(128, 3, (4,4), stride=2, padding=2),
             Sigmoid()
         )
 
         # Default mini batch size
-        self.batch_size = 16
+        self.batch_size = 100
 
         # Default learning rate
-        self.learning_rate = 1e-4
+        self.learning_rate = 1e-6
 
         # Instantiate optimizer
         self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
