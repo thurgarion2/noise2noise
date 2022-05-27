@@ -21,23 +21,27 @@ class Model():
         '''Instantiate model + optimizer + loss function + any other stuff needed'''
         # Instantiate model
         self.model = Sequential(
-            Conv2d(3, 64, (3,3), stride=2, padding=1), # 10, 15, 15
+            Conv2d(3, 64, kernel_size=(3, 3), stride=2, padding=1), 
             ReLU(),
-            Conv2d(64, 64, (3,3), stride=2, padding=1), # 20, 7, 7
+            Conv2d(64, 256, kernel_size=(3, 3), stride=2, padding=1),
             ReLU(),
-            Upsampling(64, 64, (4,4), stride=2, padding=1), # 10, 15, 15 
+            Upsampling(256, 64, kernel_size=(4, 4), stride=2, padding=1), 
             ReLU(),
-            Upsampling(64, 3, (4,4), stride=2, padding=1), # 3, 32, 32
+            Upsampling(64, 3, kernel_size=(4, 4), stride=2, padding=1),
             Sigmoid()
         )
+
+        # Default mini batch size
+        self.batch_size = 16
+
+        # Default learning rate
+        self.learning_rate = 1e-4
+
         # Instantiate optimizer
-        self.optimizer = SGD(self.model.param(), learning_rate=1e-4)
+        self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
 
         # Choose loss function
         self.criterion = MSE()
-
-        # Default mini batch size
-        self.batch_size = 100
 
         # Default path to save model
         self.model_path = Path(__file__).parent / "bestmodel.pth"
@@ -45,7 +49,7 @@ class Model():
     def load_pretrained_model(self) -> None:
         '''This loads the parameters saved in bestmodel.pth into the model'''
         self.model = torch.load(self.model_path)
-        self.optimizer = SGD(self.model.param())
+        self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
 
     def train(self, train_input: torch.Tensor, train_target: torch.Tensor, 
         num_epochs=50, verbose=False) -> None:
@@ -60,10 +64,15 @@ class Model():
 
         :verbose: (bool) Choice of verbose execution, default = False
         '''
+        # Scale input and target
+        scaled_input = train_input / 255.
+        scaled_target = train_target / 255.
+
+        # Train for num_epochs
         for e in range(num_epochs):
             epoch_loss = 0.0
-            for inputs, targets in zip(train_input.split(self.batch_size), 
-                                       train_target.split(self.batch_size)):
+            for inputs, targets in zip(scaled_input.split(self.batch_size), 
+                                       scaled_target.split(self.batch_size)):
                 output = self.model.forward(inputs)
                 epoch_loss += self.criterion.forward(output, targets)
                 self.optimizer.zero_grad()
@@ -85,4 +94,4 @@ class Model():
 
         :returns a tensor of size (N1, C, H, W) with values in range 0-255
         '''
-        return self.model.forward(test_input).mul(255)
+        return self.model.forward(test_input / 255.).mul(255)
