@@ -31,7 +31,7 @@ class Sequential(Module):
     
     def to(self,device):
         for m in self.modules:
-            modules.to(device)
+            m.to(device)
 
     def backward(self, d_out: torch.Tensor):
         '''Sequential backward pass
