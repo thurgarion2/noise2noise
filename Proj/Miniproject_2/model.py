@@ -1,4 +1,5 @@
 import torch
+import pickle
 from torch import empty, cat, arange
 from torch.nn.functional import fold, unfold
 
@@ -48,8 +49,12 @@ class Model():
 
     def load_pretrained_model(self) -> None:
         '''This loads the parameters saved in bestmodel.pth into the model'''
-        self.model = torch.load(self.model_path)
-        self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
+        # Load parameters
+        with open(self.model_path, 'rb') as f:
+            params = pickle.load(f)
+        # Update parameters
+        for i in range(len(self.optimizer.params)):
+            self.optimizer.params[i][0].zero_().add_(params[i])
 
     def train(self, train_input: torch.Tensor, train_target: torch.Tensor, 
         num_epochs=50, verbose=False) -> None:
@@ -84,7 +89,10 @@ class Model():
                 print(f'Epoch #{e+1}: MSE Loss = {epoch_loss/(train_input.shape[0]/self.batch_size):.6f}')
 
         # Save at the end of the training
-        torch.save(self.model, self.model_path)
+        params = [p for p, g in self.model.param()]
+        with open(self.model_path, 'wb') as f:
+            pickle.dump(params, f)
+        #torch.save(self.model, self.model_path)
 
 
     def predict(self, test_input) -> torch.Tensor:
