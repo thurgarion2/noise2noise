@@ -6,7 +6,6 @@ __all__ = ['to_float_image', 'ToFloatImage']
 import torch
 
 from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms
 
 def to_normalize(img, mean,std):
     return (img-mean)/std
