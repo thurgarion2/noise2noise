@@ -23,7 +23,6 @@ class SGD:
         '''Performs single optimization step'''
 
         # Add weight decay
-       
         if (self.weight_decay != 0):
             for p, g in self.params:
                 g = g + self.weight_decay * p
@@ -32,17 +31,16 @@ class SGD:
         if (self.momentum != 0):
             if (not self.velocity):
                 for _, g in self.params:
-                    self.velocity.append(g) 
+                    self.velocity.append(g.clone()) 
             else:
                 for i, (p, g) in enumerate(self.params):
                     self.velocity[i] = self.momentum * self.velocity[i] + (1 - self.dampening) * g
             
             for i, (p, g) in enumerate(self.params):
-                g = self.velocity[i]
+                g.zero_().add_(self.velocity[i])
 
         # Update parameters
         for p, g in self.params:
-
             p -= self.lr * g
 
             
