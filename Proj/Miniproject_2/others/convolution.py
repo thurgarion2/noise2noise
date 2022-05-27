@@ -195,6 +195,8 @@ class Upsampling(Module):
     def __init__(self, in_channels=3, out_channels=3, kernel_size=(2,2), stride=1, padding=0, dilation=1):        
         '''Upsampling constructor'''
         self.transposedConv2d = TransposeConv2d(in_channels, out_channels, kernel_size, stride, padding, dilation)
+        self.weight = self.transposedConv2d.weight
+        self.bias = self.transposedConv2d.bias
 
     def forward(self, input_):
         '''Upsampling forward pass
@@ -204,6 +206,11 @@ class Upsampling(Module):
         :returns: 2D transposed convolution operator applied over input
         '''
         return self.transposedConv2d.forward(input_)
+    
+    def to(self, device):
+        self.transposedConv2d.to(device)
+        self.weight = self.transposedConv2d.weight
+        self.bias = self.transposedConv2d.bias
     
     def backward(self, d_out):
         '''Upsampling backward pass
