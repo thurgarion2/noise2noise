@@ -1,6 +1,6 @@
 class SGD:
     '''Stochastic gradient descent optimizer'''
-    def __init__(self, params, learning_rate=1e-8, weight_decay=0, momentum=0, dampening=0):
+    def __init__(self, params, learning_rate=1e-4, weight_decay=0, momentum=0, dampening=0):
         '''SGD optimizer constructor
         
         :params: (iterable) - iterable of parameters to optimize

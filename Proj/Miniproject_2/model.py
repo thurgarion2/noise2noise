@@ -21,23 +21,27 @@ class Model():
         '''Instantiate model + optimizer + loss function + any other stuff needed'''
         # Instantiate model
         self.model = Sequential(
-            Conv2d(3, 64, kernel_size=3, stride=2, padding=2), 
+            Conv2d(3, 64, kernel_size=(3, 3), stride=2, padding=1), 
             ReLU(),
-            Conv2d(64, 256, kernel_size=3, stride=2, padding=2),
+            Conv2d(64, 256, kernel_size=(3, 3), stride=2, padding=1),
             ReLU(),
-            Upsampling(256, 64, kernel_size=4, stride=2, padding=2), 
+            Upsampling(256, 64, kernel_size=(4, 4), stride=2, padding=1), 
             ReLU(),
-            Upsampling(64, 3, kernel_size=4, stride=2, padding=2),
+            Upsampling(64, 3, kernel_size=(4, 4), stride=2, padding=1),
             Sigmoid()
         )
-        # Instantiate optimizer
-        self.optimizer = SGD(self.model.param())
-
-        # Choose loss function
-        self.criterion = MSE()
 
         # Default mini batch size
         self.batch_size = 16
+
+        # Default learning rate
+        self.learning_rate = 1e-4
+
+        # Instantiate optimizer
+        self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
+
+        # Choose loss function
+        self.criterion = MSE()
 
         # Default path to save model
         self.model_path = Path(__file__).parent / "bestmodel.pth"
@@ -45,7 +49,7 @@ class Model():
     def load_pretrained_model(self) -> None:
         '''This loads the parameters saved in bestmodel.pth into the model'''
         self.model = torch.load(self.model_path)
-        self.optimizer = SGD(self.model.param())
+        self.optimizer = SGD(self.model.param(), learning_rate=self.learning_rate)
 
     def train(self, train_input: torch.Tensor, train_target: torch.Tensor, 
         num_epochs=50, verbose=False) -> None:
