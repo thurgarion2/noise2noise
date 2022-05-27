@@ -293,27 +293,6 @@ of :class:<code>~torch.utils.data.DataLoader</code>.</p>
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>[autoreload of noise2noise.helpers failed: Traceback (most recent call last):
-  File &#34;/usr/local/lib/python3.7/dist-packages/IPython/extensions/autoreload.py&#34;, line 247, in check
-    superreload(m, reload, self.old_objects)
-  File &#34;/content/drive/MyDrive/noise2noise/noise2noise/helpers.py&#34;, line 40
-    mse = torch.mean(( denoised - ground_truth ) ** 2, dim=[[1,2,3])
-                                                                   ^
-SyntaxError: invalid syntax
-]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -416,22 +395,6 @@ SyntaxError: invalid syntax
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/usr/local/lib/python3.7/dist-packages/torch/utils/data/dataloader.py:490: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  cpuset_checked))
-100%|██████████| 20/20 [02:28&lt;00:00,  7.42s/it]
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 

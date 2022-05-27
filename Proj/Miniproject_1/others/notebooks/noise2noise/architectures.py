@@ -39,7 +39,7 @@ class ConvNet(nn.Module):
 
     def forward(self, x):
         x = self.layers(x)
-        return self.last_layer(x)
+        return torch.sigmoid(self.last_layer(x))
 
 
 # Cell
@@ -72,7 +72,7 @@ class ResNet(nn.Module):
         x = self.block_64(x)
         x = self.block_128(x)
         x = self.block_256(x)
-        return self.last_layer(x)
+        return torch.sigmoid(self.last_layer(x))
 
 # Cell
 
@@ -132,7 +132,7 @@ class Unet(nn.Module):
             x = l(x+z)
 
 
-        return self.last_layer(x)
+        return torch.sigmoid(self.last_layer(x))
 
 # Cell
 class UnetWithConcat(nn.Module):
